@@ -22,3 +22,11 @@ export function setStoredfirstSchoolCode(firstSchoolCode) {
 export function getStoredfirstSchoolCode() {
   return localStorage.getItem('firstSchoolCode');
 }
+
+export function setSelectedGroups(selectedGroups) {
+  localStorage.setItem('selectedGroups', JSON.stringify(selectedGroups));
+}
+
+export function getSelectedGroups() {
+  return JSON.parse(localStorage.getItem('selectedGroups'));
+}
