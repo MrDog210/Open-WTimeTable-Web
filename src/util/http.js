@@ -23,7 +23,7 @@ export async function fetchToken() {
 export async function fetchWithToken(url) {
   const token = getToken()
 
-  const json = await ky.get(url, {
+  const json = await ky.get(PROXY_URL + url, {
     headers: new Headers ({
       'Authorization': `Bearer ${token}`, 
       'Content-Type': 'application/json'
@@ -36,9 +36,8 @@ export async function fetchWithToken(url) {
     },
     hooks: {
       beforeRetry: [
-        async ({request, options, error, retryCount}) => {
-          console.log('AAAAA')
-          console.log(error, retryCount)
+        async ({request, options, error}) => {
+          console.log("Retrying")
           const token = await fetchToken()
           setToken(token)
 				  request.headers.set('Authorization', `token ${token}`);
@@ -50,18 +49,18 @@ export async function fetchWithToken(url) {
   return json
 }
 
-async function fetchSchoolUrl(schoolCode) {
-  let json = await fetchWithToken(URL + `url?schoolCode=${schoolCode}&language=slo`)
+async function fetchSchoolUrl(firstSchoolCode) { // WE NEED FERI, NOT wtt_um_feri !!!!
+  let json = await fetchWithToken(URL + `url?schoolCode=${firstSchoolCode}&language=slo`)
   return json.server.replace('http://', 'https://') // FUNNY WISE
 }
 
-export async function getSchoolInfo(schoolCode) {
-  schoolCode = schoolCode.toLowerCase()
+export async function getSchoolInfo(firstSchoolCode) { // WE NEED FERI, NOT wtt_um_feri !!!!
+  firstSchoolCode = firstSchoolCode.toLowerCase()
 
-  const serverURL = await fetchSchoolUrl(schoolCode)
+  const serverURL = await fetchSchoolUrl(firstSchoolCode)
   setServerUrl(serverURL)
 
-  let schoolInfo = await fetchWithToken(serverURL + `schoolCode?schoolCode=${schoolCode}&language=slo`)
+  let schoolInfo = await fetchWithToken(serverURL + `schoolCode?schoolCode=${firstSchoolCode}&language=slo`)
 
   return schoolInfo
 }
@@ -90,7 +89,7 @@ export async function fetchGroupsForBranch(schoolCode, branchId) {
   return json
 }
 
-export async function fetchNotifications() { // ?????????
+export async function fetchNotifications(schoolCode) { // ?????????
   const url = getServerUrl()
 
   const json = await fetchWithToken(url + `notificationByGroups?schoolCode=wtt_um_feri&language=slo&groupsId=87_231_640`)

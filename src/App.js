@@ -1,24 +1,19 @@
+import { Route, Switch, useLocation } from 'wouter';
 import './App.css';
 import SchoolCodeInputPage from './pages/SchoolCodeInputPage';
-import { useState } from 'react';
+import SchoolSetupPage from './pages/SchoolSetupPage';
 
 function App() {
-  const [path, setPath] = useState(window.location.pathname);
+  const [location, setLocation] = useLocation();
 
-  function changePath(newPath) {
-    setPath(newPath)
-    window.history.pushState(null, null, newPath)
-  }
-
-  if(path === '/') {
-    return <SchoolCodeInputPage changePath={changePath} />
-  } else {
-    return (
-      <div>
-  
-      </div>
-    );
-  }
+  return (
+    <Switch>
+      <Route path='/' component={SchoolCodeInputPage} />
+      <Route path='setup/:schoolCode'>
+        {(params) => <SchoolSetupPage schoolCode={params.schoolCode} />}
+      </Route>
+    </Switch>
+  )
 }
 
 export default App;
