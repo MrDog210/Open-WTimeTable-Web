@@ -9,9 +9,16 @@ function TimetablePage() {
   const [lectures, setLectures] = useState([{
     start: moment().toDate(),
     end: moment()
-      .add(1, "hours")
+      .add(3, "hours")
       .toDate(),
     title: "Some title"
+  },
+  {
+    start: moment().toDate(),
+    end: moment()
+      .add(3, "hours")
+      .toDate(),
+    title: "Some title 2"
   }])
   const localizer = momentLocalizer(moment)
   return (
