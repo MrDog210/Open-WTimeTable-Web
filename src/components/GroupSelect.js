@@ -1,23 +1,28 @@
 import { useEffect, useState } from "react";
-import { fetchAllDistinctGroupsForEachCourse } from "../util/wiseUtils";
-import CourseGroupSelectForm from "./form/CourseGroupSelectForm";
+import { fetchGroupsForBranch } from "../util/http";
+import Select from "react-select";
 
-function GroupSelect({schoolCode, branchId, coursesAndTheirGroups, setCoursesAndTheirGroups}) {
+function GroupSelect({schoolCode, branchId, selectedGroups, setSelectedGroups}) {
+  const [groups, setGroups] = useState([])
   useEffect(() => {
     async function fetchAndSetAllGroups() {
       if(!branchId || !schoolCode)
         return;
-      const data = await fetchAllDistinctGroupsForEachCourse(schoolCode, branchId)
-      setCoursesAndTheirGroups(data)
+      const allGroups = await fetchGroupsForBranch(schoolCode, branchId)
+      console.log(allGroups)
+      setGroups(allGroups)
     }
+    setGroups([])
     fetchAndSetAllGroups()
   }, [branchId])
   
   return (
     <div>
       Group select
-      {coursesAndTheirGroups.map((value) => <CourseGroupSelectForm course={value.course} groups={value.groups} />)}
-      <button onClick={() => console.log(coursesAndTheirGroups)}>Press me</button>
+      <Select options={groups} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} isMulti={true} onChange={(groups) => {
+        setSelectedGroups(groups)
+        //setSelectedGroups(groups.map((g) => Number(g.id)))
+      }}/>
     </div>
   )
 }

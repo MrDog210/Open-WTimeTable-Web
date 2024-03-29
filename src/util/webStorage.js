@@ -32,6 +32,7 @@ export function getStoredSchoolCode() {
 }
 
 export function setSelectedGroups(selectedGroups) {
+  console.log("Setting groups: " + JSON.stringify(selectedGroups))
   localStorage.setItem('selectedGroups', JSON.stringify(selectedGroups));
 }
 

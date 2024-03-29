@@ -13,7 +13,7 @@ function SchoolCodeInputPage({}) {
       return;
     setStoredfirstSchoolCode(schoolCode)
     const schoolInfo = await getSchoolInfo(schoolCode)
-    setLocation(`setup/${schoolInfo.schoolCode}`)
+    setLocation(`/setup/${schoolInfo.schoolCode}`)
   }
 
   return (

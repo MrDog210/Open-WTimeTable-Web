@@ -1,29 +1,33 @@
 import { useLocation } from "wouter";
 import ProgramSelect from "../components/ProgramSelect";
 import GroupSelect from "../components/GroupSelect";
-import { useState } from "react";
-import { setSelectedGroups, setSelectedProgramYearAndBranch, setStoredSchoolCode } from "../util/webStorage";
+import { useEffect, useState } from "react";
+import { setSelectedGroups as storeSelectedGroups, setSelectedProgramYearAndBranch, setStoredSchoolCode } from "../util/webStorage";
 
 function SchoolSetupPage({schoolCode}) {
   const [location, setLocation] = useLocation();
   const [selectedOptions, setSelectedOptions] = useState(null)
-  const [coursesAndTheirGroups, setCoursesAndTheirGroups] = useState([])
+  const [selectedGroups, setSelectedGroups] = useState([])
 
   function onFinished() {
     setSelectedProgramYearAndBranch(selectedOptions)
-    setSelectedGroups(coursesAndTheirGroups)
+    storeSelectedGroups(selectedGroups)
     setStoredSchoolCode(schoolCode)
 
     setLocation(`/timetable/${schoolCode}`)
   }
 
+  useEffect(() => {
+    console.log(selectedGroups)
+  }, [selectedGroups])
+
   return (
     <div>
       <ProgramSelect schoolCode={schoolCode} onSelectedOptionsConfirmed={setSelectedOptions} />
       <GroupSelect schoolCode={schoolCode} branchId={selectedOptions ? selectedOptions.branch.id : null} 
-        coursesAndTheirGroups={coursesAndTheirGroups} setCoursesAndTheirGroups={setCoursesAndTheirGroups}
+        selectedGroups={selectedGroups} setSelectedGroups={setSelectedGroups}
       />
-      {coursesAndTheirGroups.length > 0 && <button onClick={onFinished}>Finish setup</button>}
+      { selectedGroups.length > 0 && <button onClick={onFinished}>Finish setup</button>}
     </div>
   )
 }
