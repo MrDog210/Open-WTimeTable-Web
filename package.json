@@ -1,7 +1,7 @@
 {
   "name": "open-wtimetable-web",
   "version": "0.1.0",
-  "homepage": "https://MrDog210.github.io/react-gh-pages/Open-WTimeTable-Web",
+  "homepage": "https://MrDog210.github.io/Open-WTimeTable-Web",
   "private": true,
   "dependencies": {
     "@kunukn/react-collapse": "^2.2.10",
