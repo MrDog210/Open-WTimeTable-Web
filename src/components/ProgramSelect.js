@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { fetchBranchesForProgramm, getBasicProgrammes } from "../util/http"
-import Select from "react-select"
-import { getSelectedProgramYearAndBranch } from "../util/webStorage"
+import StyledSelect from "./form/StyledSelect"
 
 function generateYearsOfProgram(maxYears) {
   const numOfYears = Number(maxYears)
@@ -12,17 +11,14 @@ function generateYearsOfProgram(maxYears) {
   return years
 }
 
-function ProgramSelect({schoolCode, onSelectedOptionsConfirmed, defaultProgramm = null, defaultYear = null, defaultBranch = null}) {
+function ProgramSelect({schoolCode, selectedProgramm, setSelectedProgramm, selectedYear, setSelectedYear, selectedBranch, setSelectedBranch}) {
   const [isLoadingProgramms, setIsLoadingProgramms] = useState(false)
   const [programms, setProgramms] = useState([])
-  const [selectedProgramm, setSelectedProgramm] = useState(defaultProgramm)
 
   const [years, setYears] = useState(null)
-  const [selectedYear, setSelectedYear] = useState(defaultYear)
 
   const [isLoadingBranches, setIsLoadingBranches] = useState(false)
   const [branches, setBranches] = useState(null)
-  const [selectedBranch, setSelectedBranch] = useState(defaultBranch)
 
   useEffect(() => {
     async function fetchPrograms() {
@@ -30,7 +26,8 @@ function ProgramSelect({schoolCode, onSelectedOptionsConfirmed, defaultProgramm 
 
       setYears(null)
       setBranches(null)
-      setSelectedBranch(null)
+      //setSelectedYear(null)
+      //setSelectedBranch(null)
       setIsLoadingProgramms(true)
 
       const prog = await getBasicProgrammes(schoolCode)
@@ -47,7 +44,7 @@ function ProgramSelect({schoolCode, onSelectedOptionsConfirmed, defaultProgramm 
       if(!selectedProgramm || !schoolCode)
         return
       setBranches(null)
-      setSelectedBranch(null)
+      //setSelectedBranch(null)
       console.log(selectedProgramm)
       const y = generateYearsOfProgram(selectedProgramm.year)
       setYears(y)
@@ -68,18 +65,14 @@ function ProgramSelect({schoolCode, onSelectedOptionsConfirmed, defaultProgramm 
     fetchAndSetBranches()
   }, [selectedYear, schoolCode])
 
-  useEffect(() => {
-    if(!selectedBranch || !schoolCode)
-      return
-    onSelectedOptionsConfirmed({programm: selectedProgramm, year: selectedYear, branch: selectedBranch})
-  }, [selectedBranch])
-
   return (
     <div>
-      <div>{schoolCode}</div>
-      <Select value={selectedProgramm} options={programms} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} onChange={setSelectedProgramm} isLoading={isLoadingProgramms}/>
-      <Select isDisabled={years == null} value={selectedYear} options={years} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} onChange={setSelectedYear}/>
-      <Select isDisabled={branches == null} value={selectedBranch} options={branches} getOptionLabel={opt => opt.branchName} getOptionValue={opt => opt.id} onChange={setSelectedBranch} isLoading={isLoadingBranches} />
+      <div>Programm:</div>
+      <StyledSelect value={selectedProgramm} options={programms} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} onChange={setSelectedProgramm} isLoading={isLoadingProgramms}/>
+      <div>Year:</div>
+      <StyledSelect isDisabled={years == null} value={selectedYear} options={years} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} onChange={value => {setSelectedBranch(null);console.log("set years" + selectedBranch);setSelectedYear(value)}}/>
+      <div>Branch:</div>
+      <StyledSelect isDisabled={branches == null} value={selectedBranch} options={branches} getOptionLabel={opt => opt.branchName} getOptionValue={opt => opt.id} onChange={setSelectedBranch} isLoading={isLoadingBranches} />
     </div>
   )
 }

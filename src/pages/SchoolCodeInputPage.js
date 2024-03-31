@@ -2,11 +2,15 @@ import { useState } from "react"
 import { isSchoolCodeValid } from "../util/wiseUtils"
 import { useLocation } from "wouter";
 import classes from './SchoolCodeInputPage.module.css'
-import { setStoredfirstSchoolCode } from "../util/webStorage";
+import { getStoredfirstSchoolCode, setStoredfirstSchoolCode } from "../util/webStorage";
 
 function SchoolCodeInputPage({}) {
   const [schoolCode, setSchoolCode] = useState("")
-  const [location, setLocation] = useLocation();
+  const [location, setLocation] = useLocation()
+
+  const code = getStoredfirstSchoolCode()
+  if(code)
+    setLocation(`/${code}`)
 
   async function onConfirm(event) {
     event.preventDefault();
@@ -21,7 +25,7 @@ function SchoolCodeInputPage({}) {
       <div className={classes.center}>
         <form onSubmit={onConfirm}>
           <label htmlFor="schoolCode">Enter school code:</label> <br />
-          <input style={{marginTop: 5}} id="schoolCode" enterKeyHint="next" oncon type="text" value={schoolCode} onChange={e => setSchoolCode(e.target.value)}></input>
+          <input style={{marginTop: 5}} id="schoolCode" enterKeyHint="next" type="text" value={schoolCode} onChange={e => setSchoolCode(e.target.value)}></input>
           <button style={{marginTop: 5}} onClick={onConfirm}>CONFIRM</button>
         </form>
       </div>

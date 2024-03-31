@@ -2,6 +2,7 @@ button {
   border: none;
   background-color: var(--fg-accent);
   color: var(--fg-primary);
+  flex: 1;
   font-weight: bold;
   padding: 10px;
   cursor: pointer;

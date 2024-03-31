@@ -9,7 +9,6 @@ function App() {
   return (
     <Switch>
       <Route path='/' component={SchoolCodeInputPage} />
-
       <Route path='/:schoolCode'>
         {(params) => <TimetablePage firstSchoolCode={params.schoolCode} />}
       </Route>
