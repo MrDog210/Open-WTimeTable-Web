@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { fetchBranchesForProgramm, getBasicProgrammes } from "../util/http"
 import Select from "react-select"
-
+import { getSelectedProgramYearAndBranch } from "../util/webStorage"
 
 function generateYearsOfProgram(maxYears) {
   const numOfYears = Number(maxYears)
@@ -12,20 +12,22 @@ function generateYearsOfProgram(maxYears) {
   return years
 }
 
-function ProgramSelect({schoolCode, onSelectedOptionsConfirmed}) {
+function ProgramSelect({schoolCode, onSelectedOptionsConfirmed, defaultProgramm = null, defaultYear = null, defaultBranch = null}) {
   const [isLoadingProgramms, setIsLoadingProgramms] = useState(false)
   const [programms, setProgramms] = useState([])
-  const [selectedProgramm, setSelectedProgramm] = useState(null)
+  const [selectedProgramm, setSelectedProgramm] = useState(defaultProgramm)
 
   const [years, setYears] = useState(null)
-  const [selectedYear, setSelectedYear] = useState(null)
+  const [selectedYear, setSelectedYear] = useState(defaultYear)
 
   const [isLoadingBranches, setIsLoadingBranches] = useState(false)
   const [branches, setBranches] = useState(null)
-  const [selectedBranch, setSelectedBranch] = useState(null)
+  const [selectedBranch, setSelectedBranch] = useState(defaultBranch)
 
   useEffect(() => {
     async function fetchPrograms() {
+      if(!schoolCode) return
+
       setYears(null)
       setBranches(null)
       setSelectedBranch(null)
@@ -38,11 +40,11 @@ function ProgramSelect({schoolCode, onSelectedOptionsConfirmed}) {
       setIsLoadingProgramms(false)
     }
     fetchPrograms()
-  }, [])
+  }, [schoolCode])
 
   useEffect(() => {
     async function generateAndSetYears() {
-      if(!selectedProgramm)
+      if(!selectedProgramm || !schoolCode)
         return
       setBranches(null)
       setSelectedBranch(null)
@@ -51,11 +53,11 @@ function ProgramSelect({schoolCode, onSelectedOptionsConfirmed}) {
       setYears(y)
     }
     generateAndSetYears()
-  }, [selectedProgramm])
+  }, [selectedProgramm, schoolCode])
 
   useEffect(() => {
     async function fetchAndSetBranches() {
-      if(!selectedYear)
+      if(!selectedYear || !schoolCode)
         return
       setIsLoadingBranches(true)
       console.log(selectedYear)
@@ -64,19 +66,20 @@ function ProgramSelect({schoolCode, onSelectedOptionsConfirmed}) {
       setIsLoadingBranches(false)
     }
     fetchAndSetBranches()
-  }, [selectedYear])
+  }, [selectedYear, schoolCode])
 
   useEffect(() => {
-    if(!selectedBranch)
+    if(!selectedBranch || !schoolCode)
       return
-    onSelectedOptionsConfirmed({programm: selectedProgramm, year: selectedYear.id, branch: selectedBranch})
+    onSelectedOptionsConfirmed({programm: selectedProgramm, year: selectedYear, branch: selectedBranch})
   }, [selectedBranch])
 
   return (
     <div>
-      <Select options={programms} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} onChange={setSelectedProgramm} isLoading={isLoadingProgramms}/>
-      { years && <Select options={years} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} onChange={setSelectedYear}/>}
-      { branches && <Select options={branches} getOptionLabel={opt => opt.branchName} getOptionValue={opt => opt.id} onChange={setSelectedBranch} isLoading={isLoadingBranches} />}
+      <div>{schoolCode}</div>
+      <Select value={selectedProgramm} options={programms} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} onChange={setSelectedProgramm} isLoading={isLoadingProgramms}/>
+      <Select isDisabled={years == null} value={selectedYear} options={years} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} onChange={setSelectedYear}/>
+      <Select isDisabled={branches == null} value={selectedBranch} options={branches} getOptionLabel={opt => opt.branchName} getOptionValue={opt => opt.id} onChange={setSelectedBranch} isLoading={isLoadingBranches} />
     </div>
   )
 }

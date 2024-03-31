@@ -12,14 +12,14 @@ function GroupSelect({schoolCode, branchId, selectedGroups, setSelectedGroups}) 
       console.log(allGroups)
       setGroups(allGroups)
     }
-    setGroups([])
+    console.log("branchId" + branchId)
     fetchAndSetAllGroups()
-  }, [branchId])
+  }, [branchId, schoolCode])
   
   return (
     <div>
       Group select
-      <Select options={groups} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} isMulti={true} onChange={setSelectedGroups}/>
+      <Select isDisabled={branchId == null} value={selectedGroups} options={groups} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} isMulti={true} onChange={setSelectedGroups}/>
     </div>
   )
 }

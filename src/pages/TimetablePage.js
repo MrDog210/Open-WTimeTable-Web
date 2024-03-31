@@ -1,58 +1,54 @@
-import { useEffect, useState } from "react"
-import { getSelectedGroups, getStoredSchoolCode } from "../util/webStorage"
-import { Calendar, momentLocalizer } from "react-big-calendar"
-import moment from "moment"
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import "./../components/TimeTable/Calendar.css"
-import { fetchLecturesForGroups } from "../util/http";
-import { getWeekDates } from "../util/dateUtils";
-import CalendarEvent from "../components/TimeTable/CalendarEvent";
+import { useEffect, useState } from "react";
+import GroupSelect from "../components/GroupSelect";
+import ProgramSelect from "../components/ProgramSelect";
+import TimeTable from "../components/TimeTable/TimeTable";
+import { getSelectedGroups, getSelectedProgramYearAndBranch, getStoredSchoolCode, setSelectedProgramYearAndBranch, setStoredSchoolCode, storeSelectedGroups } from "../util/webStorage";
+import { useLocation } from "wouter";
+import { getSchoolInfo } from "../util/http";
 
-function TimetablePage() {
-  const [schoolCode] = useState(getStoredSchoolCode())
-  const [lectures, setLectures] = useState([])
-  const [date, setDate] = useState(new Date())
-  
+function TimetablePage({firstSchoolCode}) {
+  const [location, setLocation] = useLocation();
+  const [schoolCode, setSchoolCode] = useState(null)
+  const [selectedOptions, setSelectedOptions] = useState(getSelectedProgramYearAndBranch(firstSchoolCode))
+  const [selectedGroups, setSelectedGroups] = useState(getSelectedGroups(firstSchoolCode))
+
   useEffect(() => {
-    async function refreshLectures() {
-      const groups = getSelectedGroups()
-      const {from, till} = getWeekDates(date)
-      const data = await fetchLecturesForGroups(schoolCode, groups, from, till)
-      data.forEach(lecture => {
-        lecture.start_time = new Date(lecture.start_time)
-        lecture.end_time = new Date(lecture.end_time)
-      });
-      console.log(data)
-      setLectures(data)
+    async function getOrFetchSchoolCode() {
+      try {
+        const schoolInfo = await getSchoolInfo(firstSchoolCode)
+        setSchoolCode(schoolInfo.schoolCode)
+        setStoredSchoolCode(firstSchoolCode, schoolInfo.schoolCode)
+      } catch (error) {
+        window.alert(error)
+        setLocation('/')
+      }
     }
-    refreshLectures()
-  }, [date])
 
-  const localizer = momentLocalizer(moment)
+    const storedCode = getStoredSchoolCode(firstSchoolCode)
+    if(storedCode != null)
+      setSchoolCode(storedCode)
+    else
+      getOrFetchSchoolCode()
+  }, [])
+
+  useEffect(() => {
+    if(!selectedGroups)
+      return
+    setSelectedProgramYearAndBranch(firstSchoolCode, selectedOptions)
+    storeSelectedGroups(firstSchoolCode, selectedGroups)
+  }, [selectedGroups])
+
   return (
-    <Calendar 
-      localizer={localizer}
-      events={lectures}
-      components={{event: CalendarEvent}}
-      onSelectEvent={(e) => {console.log(e)}}
-      startAccessor="start_time"
-      endAccessor="end_time"
-      defaultView="work_week"
-      views={["work_week"]}
-      timeslots={1}
-      step={60}
-      date={date}
-      selectable={false}
-      onNavigate={setDate}
-      scrollToTime={true}
-      formats={{
-        eventTimeRangeFormat: () => "",
-        timeGutterFormat: (date) => moment(date).format("HH:mm"),
-        //dateFormat
-      }}
-      min={new Date(1972, 0, 1, 6, 0, 0, 0)}
-      max={new Date(1972, 0, 1, 23, 0, 0, 0)}
-    />
+    <div>
+      <div>
+        <ProgramSelect schoolCode={schoolCode} defaultProgramm={selectedOptions?.programm} 
+        defaultYear={selectedOptions?.year} defaultBranch={selectedOptions?.branch} onSelectedOptionsConfirmed={setSelectedOptions} />
+        <GroupSelect schoolCode={schoolCode} branchId={selectedOptions?.branch.id} 
+          selectedGroups={selectedGroups} setSelectedGroups={setSelectedGroups}
+        />
+      </div>
+      <TimeTable groups={selectedGroups} schoolCode={'wtt_um_feri'} />
+    </div>
   )
 }
 
