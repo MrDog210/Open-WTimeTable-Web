@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/react-gh-pages/Open-WTimeTable-Web/static/css/main.0da7c551.css",
+    "main.js": "/react-gh-pages/Open-WTimeTable-Web/static/js/main.b52841e2.js",
+    "static/js/453.711a0b89.chunk.js": "/react-gh-pages/Open-WTimeTable-Web/static/js/453.711a0b89.chunk.js",
+    "index.html": "/react-gh-pages/Open-WTimeTable-Web/index.html",
+    "main.0da7c551.css.map": "/react-gh-pages/Open-WTimeTable-Web/static/css/main.0da7c551.css.map",
+    "main.b52841e2.js.map": "/react-gh-pages/Open-WTimeTable-Web/static/js/main.b52841e2.js.map",
+    "453.711a0b89.chunk.js.map": "/react-gh-pages/Open-WTimeTable-Web/static/js/453.711a0b89.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0da7c551.css",
+    "static/js/main.b52841e2.js"
+  ]
+}
