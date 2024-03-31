@@ -1,12 +1,14 @@
 {
   "name": "open-wtimetable-web",
   "version": "0.1.0",
+  "homepage": "https://MrDog210.github.io/react-gh-pages/Open-WTimeTable-Web",
   "private": true,
   "dependencies": {
     "@kunukn/react-collapse": "^2.2.10",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "gh-pages": "^6.1.1",
     "ky": "^1.2.3",
     "moment": "^2.30.1",
     "react": "^18.2.0",
@@ -18,6 +20,8 @@
     "wouter": "^3.1.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
