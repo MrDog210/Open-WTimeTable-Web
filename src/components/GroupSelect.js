@@ -19,10 +19,7 @@ function GroupSelect({schoolCode, branchId, selectedGroups, setSelectedGroups}) 
   return (
     <div>
       Group select
-      <Select options={groups} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} isMulti={true} onChange={(groups) => {
-        setSelectedGroups(groups)
-        //setSelectedGroups(groups.map((g) => Number(g.id)))
-      }}/>
+      <Select options={groups} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} isMulti={true} onChange={setSelectedGroups}/>
     </div>
   )
 }

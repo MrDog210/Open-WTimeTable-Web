@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
-import { getSelectedGroups, getSelectedProgramYearAndBranch, getStoredSchoolCode } from "../util/webStorage"
+import { getSelectedGroups, getStoredSchoolCode } from "../util/webStorage"
 import { Calendar, momentLocalizer } from "react-big-calendar"
 import moment from "moment"
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { fetchGroupsForBranch, fetchLecturesForGroups } from "../util/http";
+import "./../components/TimeTable/Calendar.css"
+import { fetchLecturesForGroups } from "../util/http";
 import { getWeekDates } from "../util/dateUtils";
+import CalendarEvent from "../components/TimeTable/CalendarEvent";
 
 function TimetablePage() {
   const [schoolCode] = useState(getStoredSchoolCode())
@@ -25,17 +27,31 @@ function TimetablePage() {
     }
     refreshLectures()
   }, [date])
-  
+
   const localizer = momentLocalizer(moment)
   return (
     <Calendar 
       localizer={localizer}
       events={lectures}
+      components={{event: CalendarEvent}}
+      onSelectEvent={(e) => {console.log(e)}}
       startAccessor="start_time"
       endAccessor="end_time"
       defaultView="work_week"
       views={["work_week"]}
-      style={{ height: 500 }}
+      timeslots={1}
+      step={60}
+      date={date}
+      selectable={false}
+      onNavigate={setDate}
+      scrollToTime={true}
+      formats={{
+        eventTimeRangeFormat: () => "",
+        timeGutterFormat: (date) => moment(date).format("HH:mm"),
+        //dateFormat
+      }}
+      min={new Date(1972, 0, 1, 6, 0, 0, 0)}
+      max={new Date(1972, 0, 1, 23, 0, 0, 0)}
     />
   )
 }

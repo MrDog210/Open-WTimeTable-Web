@@ -1,0 +1,75 @@
+.rbc-time-view {
+  border: none;
+}
+
+.rbc-time-view * {
+  border-color: var(--fg-secondary) !important;
+}
+
+.rbc-day-slot {
+  min-width: 150px;
+}
+
+.rbc-day-slot .rbc-timeslot-group {
+  border-bottom: none;
+}
+
+.rbc-allday-cell {
+  display: none;
+}
+
+.rbc-timeslot-group {
+  min-height: 65px;
+}
+
+.rbc-header {
+  border: none;
+  min-height: 40px;
+}
+
+.rbc-time-header-content {
+  border: 0px 0px 0px 0px;
+}
+
+.rbc-time-content {
+  border-top: none;
+  border-bottom: 1px solid;
+}
+
+.rbc-events-container {
+  border: none;
+}
+
+.rbc-time-gutter .rbc-timeslot-group {
+  border: none;
+}
+
+.rbc-time-gutter .rbc-timeslot-group .rbc-time-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rbc-selected {
+  background-color: var(--bg-secondary) !important;
+}
+
+.rbc-event {
+  border-radius: 0px;
+  background-color: var(--bg-secondary);
+  border-color: var(--fg-secondary) !important;
+  color: var(--fg-primary) !important;
+}
+
+.rbc-event:focus {
+  outline: none;
+}
+
+@media (prefers-color-scheme: light) {
+  .rbc-event {
+    background-color: var(--bg-primary);
+  }
+  .rbc-selected {
+    background-color: var(--bg-primary) !important;
+  }
+}

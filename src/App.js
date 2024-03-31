@@ -1,5 +1,4 @@
 import { Route, Switch, useLocation } from 'wouter';
-import './App.css';
 import SchoolCodeInputPage from './pages/SchoolCodeInputPage';
 import SchoolSetupPage from './pages/SchoolSetupPage';
 import TimetablePage from './pages/TimetablePage';
