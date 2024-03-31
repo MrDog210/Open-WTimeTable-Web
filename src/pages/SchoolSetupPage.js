@@ -2,7 +2,7 @@ import { useLocation } from "wouter";
 import ProgramSelect from "../components/ProgramSelect";
 import GroupSelect from "../components/GroupSelect";
 import { useEffect, useState } from "react";
-import { setSelectedGroups as storeSelectedGroups, setSelectedProgramYearAndBranch, setStoredSchoolCode } from "../util/webStorage";
+import { storeSelectedGroups as storeSelectedGroups, setSelectedProgramYearAndBranch, setStoredSchoolCode } from "../util/webStorage";
 
 function SchoolSetupPage({schoolCode}) {
   const [location, setLocation] = useLocation();

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchGroupsForBranch } from "../util/http";
-import Select from "react-select";
+import StyledSelect from "./form/StyledSelect";
 
 function GroupSelect({schoolCode, branchId, selectedGroups, setSelectedGroups}) {
   const [groups, setGroups] = useState([])
@@ -12,14 +12,14 @@ function GroupSelect({schoolCode, branchId, selectedGroups, setSelectedGroups}) 
       console.log(allGroups)
       setGroups(allGroups)
     }
-    setGroups([])
+    console.log("branchId" + branchId)
     fetchAndSetAllGroups()
-  }, [branchId])
+  }, [branchId, schoolCode])
   
   return (
     <div>
-      Group select
-      <Select options={groups} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} isMulti={true} onChange={setSelectedGroups}/>
+      <div>Groups:</div>
+      <StyledSelect isDisabled={branchId == null} value={selectedGroups} options={groups} getOptionLabel={opt => opt.name} getOptionValue={opt => opt.id} isMulti={true} onChange={setSelectedGroups}/>
     </div>
   )
 }

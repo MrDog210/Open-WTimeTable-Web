@@ -1,0 +1,8 @@
+.options-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.options-inputs {
+  padding: 10px;
+}

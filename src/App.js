@@ -9,11 +9,8 @@ function App() {
   return (
     <Switch>
       <Route path='/' component={SchoolCodeInputPage} />
-      <Route path='setup/:schoolCode'>
-        {(params) => <SchoolSetupPage schoolCode={params.schoolCode} />}
-      </Route>
-      <Route path='timetable/:schoolCode'>
-        <TimetablePage />
+      <Route path='/:schoolCode'>
+        {(params) => <TimetablePage firstSchoolCode={params.schoolCode} />}
       </Route>
     </Switch>
   )
