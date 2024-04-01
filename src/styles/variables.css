@@ -6,7 +6,7 @@
     --fg-accent: #419bf9;
     --fg-accent-disabled: #8CC3FC;
     --fg-accent-pressed: #4684C8;
-    --fg-primary-opaque: #554d5640;
+    --fg-primary-opaque: #554d5660;
 
     --bg-primary: white;
     --bg-secondary: #fbfbfb;
@@ -23,7 +23,7 @@
     --fg-accent: #419bf9;
     --fg-accent-disabled: #8CC3FC;
     --fg-accent-pressed: #4684C8;
-    --fg-primary-opaque: #554d5640;
+    --fg-primary-opaque: #F0F0F060;
 
     --bg-primary: #1A1A1A;
     --bg-secondary: #2C2C2C;

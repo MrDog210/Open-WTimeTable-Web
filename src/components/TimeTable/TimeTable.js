@@ -10,25 +10,32 @@ import CalendarEvent from "../../components/TimeTable/CalendarEvent";
 function TimeTable({schoolCode, groups}) {
   const [lectures, setLectures] = useState([])
   const [date, setDate] = useState(new Date())
+  const [isFetching, setIsFetching] = useState(false)
   
   useEffect(() => {
     async function refreshLectures() {
       if(!schoolCode || !groups || groups.length == 0) return
-      const {from, till} = getWeekDates(date)
-      const data = await fetchLecturesForGroups(schoolCode, groups, from, till)
-      data.forEach(lecture => {
-        lecture.start_time = new Date(lecture.start_time)
-        lecture.end_time = new Date(lecture.end_time)
-      });
-      console.log(data)
-      setLectures(data)
+      setIsFetching(true)
+      try{
+        const {from, till} = getWeekDates(date)
+        const data = await fetchLecturesForGroups(schoolCode, groups, from, till)
+        data.forEach(lecture => {
+          lecture.start_time = new Date(lecture.start_time)
+          lecture.end_time = new Date(lecture.end_time)
+        });
+        console.log(data)
+        setLectures(data)
+      } catch (e) {
+        window.alert(e)
+      }
+      setIsFetching(false)
     }
     refreshLectures()
   }, [date, groups, schoolCode])
 
   const localizer = momentLocalizer(moment)
   return (
-    <Calendar 
+    <Calendar style={{ cursor: isFetching ? 'progress' : undefined}}
       localizer={localizer}
       events={lectures}
       components={{event: CalendarEvent}}

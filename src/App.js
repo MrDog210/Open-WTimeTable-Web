@@ -1,18 +1,16 @@
-import { Route, Switch, useLocation } from 'wouter';
+import { Route, Router } from 'wouter';
 import SchoolCodeInputPage from './pages/SchoolCodeInputPage';
-import SchoolSetupPage from './pages/SchoolSetupPage';
 import TimetablePage from './pages/TimetablePage';
+import { useHashLocation } from "wouter/use-hash-location";
 
 function App() {
-  const [location, setLocation] = useLocation();
-
   return (
-    <Switch>
+    <Router hook={useHashLocation}>
       <Route path='/' component={SchoolCodeInputPage} />
       <Route path='/:schoolCode'>
         {(params) => <TimetablePage firstSchoolCode={params.schoolCode} />}
       </Route>
-    </Switch>
+    </Router>
   )
 }
 

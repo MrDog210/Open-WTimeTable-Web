@@ -3,13 +3,11 @@ import GroupSelect from "../components/GroupSelect";
 import ProgramSelect from "../components/ProgramSelect";
 import TimeTable from "../components/TimeTable/TimeTable";
 import { getSelectedGroups, getSelectedProgramYearAndBranch, getStoredSchoolCode, setSelectedProgramYearAndBranch, setStoredSchoolCode, storeSelectedGroups } from "../util/webStorage";
-import { useLocation } from "wouter";
 import { getSchoolInfo } from "../util/http";
 import Collapse from "@kunukn/react-collapse";
 import classes from './TimetablePage.module.css'
 
 function TimetablePage({firstSchoolCode}) {
-  const [location, setLocation] = useLocation();
   const [schoolCode, setSchoolCode] = useState(null)
   const [selectedOptions, setSelectedOptions] = useState(getSelectedProgramYearAndBranch(firstSchoolCode))
   const [selectedGroups, setSelectedGroups] = useState(getSelectedGroups(firstSchoolCode))

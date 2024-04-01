@@ -2,6 +2,10 @@
   border: none;
 }
 
+.rbc-btn-group button {
+  color: var(--fg-primary);
+}
+
 .rbc-time-view * {
   border-color: var(--fg-secondary) !important;
 }
@@ -12,6 +16,10 @@
 
 .rbc-day-slot .rbc-timeslot-group {
   border-bottom: none;
+}
+
+.rbc-today {
+  background-color: var(--bg-secondary);
 }
 
 .rbc-allday-cell {
@@ -63,6 +71,10 @@
 
 .rbc-event:focus {
   outline: none;
+}
+
+.rbc-current-time-indicator {
+  background-color: var(--fg-primary-opaque);
 }
 
 @media (prefers-color-scheme: light) {
