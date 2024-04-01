@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Open-WTimeTable-Web/static/css/main.0da7c551.css",
-    "main.js": "/Open-WTimeTable-Web/static/js/main.bb9d3c9a.js",
+    "main.css": "/Open-WTimeTable-Web/static/css/main.5761883c.css",
+    "main.js": "/Open-WTimeTable-Web/static/js/main.ad1ede08.js",
     "static/js/453.711a0b89.chunk.js": "/Open-WTimeTable-Web/static/js/453.711a0b89.chunk.js",
     "index.html": "/Open-WTimeTable-Web/index.html",
-    "main.0da7c551.css.map": "/Open-WTimeTable-Web/static/css/main.0da7c551.css.map",
-    "main.bb9d3c9a.js.map": "/Open-WTimeTable-Web/static/js/main.bb9d3c9a.js.map",
+    "main.5761883c.css.map": "/Open-WTimeTable-Web/static/css/main.5761883c.css.map",
+    "main.ad1ede08.js.map": "/Open-WTimeTable-Web/static/js/main.ad1ede08.js.map",
     "453.711a0b89.chunk.js.map": "/Open-WTimeTable-Web/static/js/453.711a0b89.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0da7c551.css",
-    "static/js/main.bb9d3c9a.js"
+    "static/css/main.5761883c.css",
+    "static/js/main.ad1ede08.js"
   ]
 }
