@@ -1,4 +1,5 @@
 button {
+  display: flex;
   border: none;
   background-color: var(--fg-accent);
   color: var(--fg-primary);
@@ -7,6 +8,8 @@ button {
   padding: 10px;
   cursor: pointer;
   font-size: 1rem;
+  align-items: center;
+  justify-content: center;
 }
 
 button:active {
@@ -17,6 +20,13 @@ input {
   padding: 10px;
   flex: 1;
   font-size: 1rem;
+}
+
+.warning-content {
+  background-color: var(--fg-warning);
+  padding: 10px;
+  font-weight: bold;
+  text-align: center;
 }
 
 @media (prefers-color-scheme: light) {

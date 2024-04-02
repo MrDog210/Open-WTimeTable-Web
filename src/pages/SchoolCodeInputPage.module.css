@@ -17,3 +17,17 @@
   width: 60%;
   max-width: 800px;
 }
+
+.banner {
+  width: 60%;
+}
+
+@media only screen and (max-width: 600px) {
+  .center {
+    width: 95%;
+  }
+
+  .banner {
+    width: 90%;
+  }
+}

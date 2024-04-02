@@ -46,3 +46,7 @@ export function setSelectedProgramYearAndBranch(firstSchoolCode, data) { //
 export function getSelectedProgramYearAndBranch(firstSchoolCode) {
   return JSON.parse(localStorage.getItem(`selectedPYB${firstSchoolCode}`));
 }
+
+export function clearStorage() {
+  localStorage.clear()
+}

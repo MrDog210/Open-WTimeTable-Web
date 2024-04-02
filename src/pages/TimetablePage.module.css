@@ -6,3 +6,14 @@
 .options-inputs {
   padding: 10px;
 }
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  column-gap: 15px;
+  row-gap: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
