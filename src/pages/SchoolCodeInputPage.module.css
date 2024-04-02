@@ -19,7 +19,7 @@
 }
 
 .banner {
-  width: 60%;
+  width: 80%;
 }
 
 @media only screen and (max-width: 600px) {
@@ -29,5 +29,12 @@
 
   .banner {
     width: 90%;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .banner {
+    background-color: #1A1A1A;
+    border-radius: 50px;
   }
 }
