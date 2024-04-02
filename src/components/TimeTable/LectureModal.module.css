@@ -1,0 +1,15 @@
+.overlay {
+  background: var(--bg-primary-opaque)
+}
+.modal {
+  background: var(--bg-primary);
+  color: var(--fg-primary) !;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: none;
+  border: 1px solid var(--bg-seperator);
+}
+
+svg {
+  color: var(--fg-primary);
+}

@@ -8,6 +8,7 @@ import Collapse from "@kunukn/react-collapse";
 import classes from './TimetablePage.module.css'
 import IconButton from "../components/IconButton";
 import { useLocation } from "wouter";
+import LectureModal from "../components/TimeTable/LectureModal";
 
 function TimetablePage({firstSchoolCode}) {
   const [schoolCode, setSchoolCode] = useState(null)
@@ -15,6 +16,8 @@ function TimetablePage({firstSchoolCode}) {
   const [selectedGroups, setSelectedGroups] = useState(getSelectedGroups(firstSchoolCode))
   const [optionsOpen, setOptionsOpen] = useState(false)
   const [location, setLocation] = useLocation()
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalLecture, setModalLecture] = useState(null)
 
   useEffect(() => {
     async function getOrFetchSchoolCode() {
@@ -62,12 +65,13 @@ function TimetablePage({firstSchoolCode}) {
           </div>
       </Collapse>
       </div>
-      <TimeTable groups={selectedGroups} schoolCode={schoolCode} />
+      <TimeTable groups={selectedGroups} schoolCode={schoolCode} onLectureClicked={(lecture) => {setModalLecture(lecture); setModalOpen(true)}} />
       <div className={classes.footer}>
         <IconButton text="Download android app" icon="logo-android" href="https://github.com/MrDog210/Open-WTimeTable/releases/latest" />
         <IconButton text="View source code" icon="logo-github" href="https://github.com/MrDog210/Open-WTimeTable-Web" />
         <IconButton text="Report an issue" icon="logo-github" href="https://github.com/MrDog210/Open-WTimeTable-Web/issues/new" />
       </div>
+      <LectureModal modalVisible={modalOpen} lecture={modalLecture} onClose={() => { setModalOpen(false) }} />
     </div>
   )
 }

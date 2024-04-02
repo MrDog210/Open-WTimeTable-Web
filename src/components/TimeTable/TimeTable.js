@@ -7,7 +7,7 @@ import { fetchLecturesForGroups } from "../../util/http";
 import { getWeekDates } from "../../util/dateUtils";
 import CalendarEvent from "../../components/TimeTable/CalendarEvent";
 
-function TimeTable({schoolCode, groups}) {
+function TimeTable({schoolCode, groups, onLectureClicked}) {
   const [lectures, setLectures] = useState([])
   const [date, setDate] = useState(new Date())
   const [isFetching, setIsFetching] = useState(false)
@@ -39,7 +39,7 @@ function TimeTable({schoolCode, groups}) {
       localizer={localizer}
       events={lectures}
       components={{event: CalendarEvent}}
-      onSelectEvent={(e) => {console.log(e)}}
+      onSelectEvent={(lecture) => { onLectureClicked(lecture) }}
       startAccessor="start_time"
       endAccessor="end_time"
       defaultView="work_week"
