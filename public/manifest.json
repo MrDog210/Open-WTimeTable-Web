@@ -1,6 +1,6 @@
 {
   "short_name": "Open Wise TimeTable",
-  "name": "Web implementation of wise timetable in react",
+  "name": "Open Wise TimeTable Web",
   "icons": [
     {
       "src": "favicon.ico",
