@@ -47,6 +47,14 @@ export function getSelectedProgramYearAndBranch(firstSchoolCode) {
   return JSON.parse(localStorage.getItem(`selectedPYB${firstSchoolCode}`));
 }
 
+export function getLastTimetableView() {
+  return localStorage.getItem(`lastTTView`);
+}
+
+export function setLastTimetableView(view) {
+  localStorage.setItem(`lastTTView`, view);
+}
+
 export function clearStorage() {
   localStorage.clear()
 }

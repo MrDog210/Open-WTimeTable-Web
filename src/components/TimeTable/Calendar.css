@@ -19,7 +19,7 @@
 }
 
 .rbc-today {
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-primary);
 }
 
 .rbc-allday-cell {
@@ -83,5 +83,11 @@
   }
   .rbc-selected {
     background-color: var(--bg-primary) !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .rbc-active {
+    color: var(--bg-primary) !important;
   }
 }

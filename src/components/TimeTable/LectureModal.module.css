@@ -6,10 +6,25 @@
   color: var(--fg-primary) !;
   max-width: 500px;
   width: 100%;
+  min-height: 100px;
+  max-height: 80%;
+  height: auto;
   box-shadow: none;
   border: 1px solid var(--bg-seperator);
 }
 
-svg {
+.modal svg {
   color: var(--fg-primary);
+}
+
+.title {
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 15px;
+}
+
+.subtitle {
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 10px;
 }

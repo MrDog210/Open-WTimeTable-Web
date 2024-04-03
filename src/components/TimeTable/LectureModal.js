@@ -3,6 +3,9 @@ import { useEffect } from "react";
 import Modal from "react-responsive-modal"
 import "react-responsive-modal/styles.css";
 import classes from "./LectureModal.module.css"
+import { formatArray } from "../../util/wiseUtils";
+import ContentCard from "./ContentCard";
+import { getTimeFromDate } from "../../util/dateUtils";
 
 function LectureModal({modalVisible, lecture, onClose}) {
   if(!lecture)
@@ -17,14 +20,22 @@ function LectureModal({modalVisible, lecture, onClose}) {
         overlay: classes.overlay,
         modal: classes.modal
       }}
-      aria-labelledby="my-modal-title"
     >
-      <h2>{course}</h2>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-        pulvinar risus non risus hendrerit venenatis. Pellentesque sit amet
-        hendrerit risus, sed porttitor quam.
-      </p>
+      <h2 className={classes.title}>{course ? course : eventType}</h2>
+      <hr />
+      <div>
+        <div className={classes.subtitle}>
+          <span>{`${getTimeFromDate(start_time)} - ${getTimeFromDate(end_time)}`}</span>
+          {executionType && <span>{executionType}</span>}
+        </div>
+        <ContentCard title="Rooms:" content={formatArray(rooms, 'name')} />
+        <ContentCard title='Groups:' content={formatArray(groups, 'name')} />
+        <ContentCard title='Lecturers:' content={formatArray(lecturers, 'name')} />
+        <ContentCard title='Note:' content={note} />
+        <ContentCard title='Show link:' content={showLink} />
+        <ContentCard title='Color text:' content={colorText} />
+        <div></div>
+      </div>
     </Modal>
   )
 }
