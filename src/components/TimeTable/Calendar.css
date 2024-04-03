@@ -32,7 +32,11 @@
 
 .rbc-header {
   border: none;
+  display: flex;
   min-height: 40px;
+  padding-bottom: 5px;
+  justify-content: center;
+  align-items: center;
 }
 
 .rbc-time-header-content {
