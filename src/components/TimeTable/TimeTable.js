@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
-import { Calendar, momentLocalizer } from "react-big-calendar"
-import moment from "moment"
+import { Calendar, dayjsLocalizer } from "react-big-calendar"
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./Calendar.css"
 import { fetchLecturesForGroups } from "../../util/http";
 import { getWeekDates } from "../../util/dateUtils";
 import CalendarEvent from "../../components/TimeTable/CalendarEvent";
 import { getLastTimetableView, setLastTimetableView } from "../../util/webStorage";
+import dayjs from 'dayjs'
 
 function TimeTable({schoolCode, groups, onLectureClicked}) {
   const [lectures, setLectures] = useState([])
@@ -42,7 +42,7 @@ function TimeTable({schoolCode, groups, onLectureClicked}) {
   if(lastView === null || lastView === undefined)
     lastView = "work_week"
 
-  const localizer = momentLocalizer(moment)
+  const localizer = dayjsLocalizer(dayjs)
   return (
     <Calendar style={{ cursor: isFetching ? 'progress' : undefined}}
       localizer={localizer}
@@ -62,7 +62,7 @@ function TimeTable({schoolCode, groups, onLectureClicked}) {
       scrollToTime={true}
       formats={{
         eventTimeRangeFormat: () => "",
-        timeGutterFormat: (date) => moment(date).format("HH:mm"),
+        timeGutterFormat: (date) => dayjs(date).format("HH:mm"),
         //dateFormat
       }}
       min={new Date(1972, 0, 1, 6, 0, 0, 0)}
