@@ -25,13 +25,13 @@
   "background_color": "#1A1A1A",
   "screenshots": [
     {
-      "src": "/screenshots/mobile.png",
+      "src": "https://github.com/MrDog210/Open-WTimeTable-Web/blob/master/public/screenshots/mobile.png",
       "type": "image/png",
       "sizes": "359x760",
       "form_factor": "narrow"
     },
     {
-      "src": "/screenshots/desktop.png",
+      "src": "https://raw.githubusercontent.com/MrDog210/Open-WTimeTable-Web/master/public/screenshots/desktop.png",
       "type": "image/png",
       "sizes": "1902x1093",
       "form_factor": "wide"
