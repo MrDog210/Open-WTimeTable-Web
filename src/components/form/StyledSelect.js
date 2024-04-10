@@ -7,7 +7,9 @@ function StyledSelect(props) {
     control: () => classes.control,
     valueContainer: () => classes["value-container"],
     option: () => classes.option,
-    menu: () => classes.menu
+    menu: () => classes.menu,
+    multiValue: () => classes.multiVal,
+    clearIndicator: () => classes.clearIndicator
   }}/>
 }
 

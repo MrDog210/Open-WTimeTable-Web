@@ -13,11 +13,11 @@
 }
 
 .option {
-
+  background-color: var(--bg-primary) !important;
 }
 
 .option:hover {
-  background-color: var(--fg-accent);
+  background-color: var(--fg-accent) !important;
 }
 
 @media (prefers-color-scheme: light) {
@@ -26,6 +26,10 @@
   }
 }
 
-.menu {
+.multiVal {
+  background-color: var(--bg-seperator) !important;
+}
 
+.clearIndicator:hover {
+  background-color: var(--bg-seperator) !important;
 }

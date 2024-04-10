@@ -20,6 +20,7 @@ function LectureModal({modalVisible, lecture, onClose}) {
         overlay: classes.overlay,
         modal: classes.modal
       }}
+      blockScroll={false}
     >
       <h2 className={classes.title}>{course ? course : eventType}</h2>
       <hr />
