@@ -1,10 +1,12 @@
+import SchoolCodeInputPage from "./app/pages/setup/SchoolCodeInputPage";
+
 function App() {
 
   return (
-    <>
-     test
-    </>
-  )
+    <main>
+      <SchoolCodeInputPage />
+    </main>
+  );
 }
 
-export default App
+export default App;
