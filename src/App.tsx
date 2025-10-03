@@ -1,11 +1,16 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SchoolCodeInputPage from "./app/pages/setup/SchoolCodeInputPage";
+
+const queryClient = new QueryClient()
 
 function App() {
 
   return (
-    <main>
-      <SchoolCodeInputPage />
-    </main>
+    <QueryClientProvider client={queryClient}>
+      <main>
+        <SchoolCodeInputPage />
+      </main>
+    </QueryClientProvider>
   );
 }
 
