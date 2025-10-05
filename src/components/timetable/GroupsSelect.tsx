@@ -1,18 +1,23 @@
 import type { CoursesAndTheirGroups } from "@/lib/types"
 import { MultiSelect, type MultiSelectOption } from "../ui/multi-select"
-import { useMemo } from "react"
+import type { SelectedGroups } from "@/context/UserSettingsContext"
 
 type GroupsSelectProps = {
   courses: CoursesAndTheirGroups[]
-  setCourses: (courses: CoursesAndTheirGroups[]) => void
+  selectedGroups: SelectedGroups
+  setSelectedGroup: (courseId: string, selectedGroups: string[]) => void
 }
 
-function GroupsSelect({courses, setCourses}: GroupsSelectProps) {
+function GroupsSelect({courses, selectedGroups, setSelectedGroup}: GroupsSelectProps) {
 
   return (
     <>
       {
-        courses.map(({course, groups}) => ())
+        courses.map((c) => <GroupSelect key={c.course.id}
+          course={c} 
+          selectedGroups={selectedGroups[c.course.id]}
+          setSelectedGroups={(ids) => setSelectedGroup(c.course.id, ids)}  
+        />)
       }
     </>
   )
@@ -22,11 +27,11 @@ export default GroupsSelect
 
 type GroupSelectProps = {
   course: CoursesAndTheirGroups
-  selectedCourses: string[],
-  setSelectedCourses: (ids: string[]) => void
+  selectedGroups: string[],
+  setSelectedGroups: (ids: string[]) => void
 }
 
-function GroupSelect({course, selectedCourses, setSelectedCourses}: GroupSelectProps) {
+function GroupSelect({course, selectedGroups: selectedCourses, setSelectedGroups: setSelectedCourses}: GroupSelectProps) {
   const options = course.groups.map((g): MultiSelectOption => ({
     label: g.name,
     value: g.id as unknown as string
@@ -40,7 +45,6 @@ function GroupSelect({course, selectedCourses, setSelectedCourses}: GroupSelectP
         value={selectedCourses}
         onValueChange={setSelectedCourses}
       />
-      
     </>
   )
 }

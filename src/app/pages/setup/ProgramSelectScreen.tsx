@@ -7,14 +7,14 @@ import type { Programme } from "@/lib/types"
 import { getSchoolInfo } from "@/stores/schoolData"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useState } from "react"
-import dayjs from "dayjs"
-import { getSchoolYearDates } from "@/lib/date"
 import { Loader2Icon } from "lucide-react"
 import { useWizard } from "react-use-wizard"
+import { useSettings } from "@/context/UserSettingsContext"
 
 function ProgramSelectScreen() {
   const schoolInfo = getSchoolInfo()
-  const { nextStep, previousStep } = useWizard()
+  const { previousStep } = useWizard()
+  const { changeSettings } = useSettings()
 
   const [selectedProgramme, setSelectedProgramme] = useState<Programme | undefined>(undefined)
   const [selectedYear, setSelectedYear] = useState<string | undefined>(undefined)
@@ -44,16 +44,20 @@ function ProgramSelectScreen() {
 
   const saveSelectedBranches = useMutation({
     mutationFn: async () => {
-      const groups = await getAndSetAllDistinctBranchGroups(schoolInfo.schoolCode, selectedBranches)
+      return getAndSetAllDistinctBranchGroups(schoolInfo.schoolCode, selectedBranches)
+
+      /*const groups = await getAndSetAllDistinctBranchGroups(schoolInfo.schoolCode, selectedBranches)
       const {startDate, endDate} = getSchoolYearDates()
       const lectures = await fetchLecturesForGroups(schoolInfo.schoolCode, groups, startDate, endDate)
       //const lectures = await fetchLecturesForGroups(schoolInfo.schoolCode, groups, dayjs().subtract(1, 'months').toDate(), dayjs().add(2, 'months').toDate())
       const start = performance.now()
-      console.log(getCoursesWithGroups(lectures, groups.map((g) => g.id)))
-      console.log(performance.now() - start)
+      scg(getCoursesWithGroups(lectures, groups.map((g) => g.id)))
+      console.log(performance.now() - start)*/
     },
     onSuccess: () => {
-      nextStep()
+      changeSettings({
+        hasCompletedSetup: true
+      })
     }
   })
 
@@ -114,7 +118,7 @@ function ProgramSelectScreen() {
           />
         </>
       }
-      <Button onClick={previousStep}>Back</Button>
+      <Button variant={"secondary"} onClick={previousStep}>Back</Button>
       <Button disabled={selectedBranches.length === 0 || saveSelectedBranches.isPending } onClick={onConformPressed}>
         { saveSelectedBranches.isPending && <Loader2Icon className="animate-spin" />}
         Confirm
