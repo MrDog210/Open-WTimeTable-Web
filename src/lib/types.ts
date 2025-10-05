@@ -11,7 +11,7 @@ export type SchoolInfo = {
   lastChangeDate: string
 }
 
-export type GroupLecture = {
+export interface GroupLecture {
   id: number,
   name: string
 }
@@ -70,4 +70,27 @@ export type LectureWise = {
   showLink: string,
   color: string,
   colorText: string
+}
+
+export interface TreeProgramme extends Programme {
+  years: TreeYears[]
+}
+
+export interface TreeYears {
+  id: number
+  name: string,
+}
+
+export type Course = {
+  id: string,
+  course: string
+}
+
+export type CoursesAndTheirGroups = {
+  course: Course,
+  groups: GroupWihtSelection[]
+}
+
+export interface GroupWihtSelection extends GroupLecture {
+  selected: boolean
 }

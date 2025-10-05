@@ -8,7 +8,7 @@ export async function setUrlSchoolCode(schoolCode: string) {
   return localStorage.setItem('UrlSchoolCode', schoolCode)
 }
 
-export async function getSchoolInfo() {
+export function getSchoolInfo() {
   const jsonString = localStorage.getItem('schoolInfo')
   if(!jsonString)
     throw new Error("schoolInfo is null!")

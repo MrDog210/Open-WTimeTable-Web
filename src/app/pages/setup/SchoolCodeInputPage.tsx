@@ -5,9 +5,11 @@ import { setSchoolInfo, setUrlSchoolCode } from "@/stores/schoolData"
 import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 import { Loader2Icon } from "lucide-react"
+import { useWizard } from "react-use-wizard"
 
 function SchoolCodeInputPage() {
   const [code, setCode] = useState('')
+  const { nextStep } = useWizard();
 
   const schoolInfoMutation = useMutation({
     mutationFn: async () => {
@@ -17,12 +19,10 @@ function SchoolCodeInputPage() {
       return schoolInfo
     },
     onError: (error) => {
-      alert('Failed to fetch school info. Please check your school code and internet connection.')
       console.error(error)
     },
-    onSuccess: (data) => {
-      alert(`Successfully fetched school info for ${data.schoolName}. You can now proceed to the next step.`)
-      console.log(data)
+    onSuccess: () => {
+      nextStep()
     }
   })
   
@@ -36,7 +36,7 @@ function SchoolCodeInputPage() {
         <Input minLength={1} required type="text" placeholder="Enter your school code (feri)" value={code} onChange={(e) => setCode(e.target.value)} />
         <Button disabled={schoolInfoMutation.isPending || code.length === 0}  type="submit">
           { schoolInfoMutation.isPending && <Loader2Icon className="animate-spin" />}
-          Submit
+          Confirm
         </Button>
       </form>
     </div>
