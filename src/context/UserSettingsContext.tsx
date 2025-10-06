@@ -86,10 +86,14 @@ function UserSettingsContextProvider({children}: {children: ReactNode}) {
   }
 
   function changeSelectedGroups(courseId: string, selectedGroups: string[]) {
+    console.log("changing selected groups", selectedGroups)
     changeSettings({
-      ...settings.selectedGroups,
-      [courseId]: selectedGroups
+      selectedGroups: {
+        ...settings.selectedGroups,
+        [courseId]: selectedGroups
+      }
     })
+    console.log(settings.selectedGroups)
   }
 
   const ctx: SettingsContextType = {

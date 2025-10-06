@@ -1,6 +1,7 @@
-import { setAllBranchGroups } from "@/stores/schoolData"
-import { fetchGroupsForBranch } from "./http/api"
+import { getSchoolInfo, getSelectedBranches, setAllBranchGroups } from "@/stores/schoolData"
+import { fetchGroupsForBranch, fetchLecturesForGroups } from "./http/api"
 import type { Course, CoursesAndTheirGroups, GroupBranchChild, GroupBranchMain, GroupLecture, LectureWise } from "./types"
+import { getSchoolYearDates } from "./date"
 
 export async function getAndSetAllDistinctBranchGroups(schoolCode: string, chosenBranchesID: string[]) {
   const groups: GroupBranchChild[] = []
@@ -61,4 +62,15 @@ export function getCoursesWithGroups(lectures: LectureWise[], allGroupsForBranch
     })
   })
   return result
+}
+
+
+export async function fetchCoursesAndTheirGroups() {
+  const {startDate, endDate} = getSchoolYearDates()
+  const schoolInfo = getSchoolInfo()
+  const selectedBranches = getSelectedBranches()
+  const groups = await getAndSetAllDistinctBranchGroups(schoolInfo.schoolCode, selectedBranches)
+  const lectures = await fetchLecturesForGroups(schoolInfo.schoolCode, groups, startDate, endDate)
+  //const lectures = await fetchLecturesForGroups(schoolInfo.schoolCode, groups, dayjs().subtract(1, 'months').toDate(), dayjs().add(2, 'months').toDate())
+  return getCoursesWithGroups(lectures, groups.map((g) => g.id))
 }

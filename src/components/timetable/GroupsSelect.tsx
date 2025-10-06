@@ -34,8 +34,9 @@ type GroupSelectProps = {
 function GroupSelect({course, selectedGroups: selectedCourses, setSelectedGroups: setSelectedCourses}: GroupSelectProps) {
   const options = course.groups.map((g): MultiSelectOption => ({
     label: g.name,
-    value: g.id as unknown as string
+    value: String(g.id)
   }))
+  console.log(course.course.course, selectedCourses)
 
   return (
     <>

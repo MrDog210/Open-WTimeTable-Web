@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { fetchBranchesForProgramm, fetchLecturesForGroups, getBasicProgrammes } from "@/lib/http/api"
 import { getAndSetAllDistinctBranchGroups, getCoursesWithGroups } from "@/lib/timetableUtils"
 import type { Programme } from "@/lib/types"
-import { getSchoolInfo } from "@/stores/schoolData"
+import { getSchoolInfo, saveSelectedBranches } from "@/stores/schoolData"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { Loader2Icon } from "lucide-react"
@@ -43,8 +43,9 @@ function ProgramSelectScreen() {
     enabled: !!selectedProgramme && !!selectedYear
   })
 
-  const saveSelectedBranches = useMutation({
+  const saveSelectedBranchesMutation = useMutation({
     mutationFn: async () => {
+      saveSelectedBranches(selectedBranches)
       return getAndSetAllDistinctBranchGroups(schoolInfo.schoolCode, selectedBranches)
 
       /*const groups = await getAndSetAllDistinctBranchGroups(schoolInfo.schoolCode, selectedBranches)
@@ -63,7 +64,7 @@ function ProgramSelectScreen() {
   })
 
   function onConformPressed() {
-    saveSelectedBranches.mutate()
+    saveSelectedBranchesMutation.mutate()
   }
   
   //console.log(selectedProgramme)
@@ -119,8 +120,8 @@ function ProgramSelectScreen() {
                 onValueChange={setSelectedBranches}
               />
           <Button variant={"secondary"} onClick={previousStep}>Back</Button>
-          <Button disabled={selectedBranches.length === 0 || saveSelectedBranches.isPending } onClick={onConformPressed}>
-            { saveSelectedBranches.isPending && <Loader2Icon className="animate-spin" />}
+          <Button disabled={selectedBranches.length === 0 || saveSelectedBranchesMutation.isPending } onClick={onConformPressed}>
+            { saveSelectedBranchesMutation.isPending && <Loader2Icon className="animate-spin" />}
             Confirm
           </Button>
         </CardContent>
