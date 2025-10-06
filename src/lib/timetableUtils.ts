@@ -2,6 +2,7 @@ import { getSchoolInfo, getSelectedBranches, setAllBranchGroups } from "@/stores
 import { fetchGroupsForBranch, fetchLecturesForGroups } from "./http/api"
 import type { Course, CoursesAndTheirGroups, GroupBranchChild, GroupBranchMain, GroupLecture, LectureWise } from "./types"
 import { getSchoolYearDates } from "./date"
+import type { SelectedGroups } from "@/context/UserSettingsContext"
 
 export async function getAndSetAllDistinctBranchGroups(schoolCode: string, chosenBranchesID: string[]) {
   const groups: GroupBranchChild[] = []
@@ -64,7 +65,6 @@ export function getCoursesWithGroups(lectures: LectureWise[], allGroupsForBranch
   return result
 }
 
-
 export async function fetchCoursesAndTheirGroups() {
   const {startDate, endDate} = getSchoolYearDates()
   const schoolInfo = getSchoolInfo()
@@ -73,4 +73,25 @@ export async function fetchCoursesAndTheirGroups() {
   const lectures = await fetchLecturesForGroups(schoolInfo.schoolCode, groups, startDate, endDate)
   //const lectures = await fetchLecturesForGroups(schoolInfo.schoolCode, groups, dayjs().subtract(1, 'months').toDate(), dayjs().add(2, 'months').toDate())
   return getCoursesWithGroups(lectures, groups.map((g) => g.id))
+}
+
+export function getDistinctSelectedGroups(selectedGroups: SelectedGroups) {
+  const distinct: string[] = []
+
+  for(const courseId in selectedGroups) {
+    for(const group of selectedGroups[courseId]) {
+      if(!distinct.includes(group))
+        distinct.push(group)
+    }
+  }
+  
+  return distinct
+}
+
+export function formatArray(array: { [key: string]: any }[], key: string) {
+  let string = ''
+  for(let i = 0; i<array.length; i++)
+    string += array[i][key] +((i !== array.length -1) ? ', ' : '')
+
+  return string
 }

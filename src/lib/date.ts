@@ -18,3 +18,28 @@ export function getSchoolYearDates() {
 
   return {startDate, endDate}
 }
+
+export function getMonday(d: Date | string) {
+  d = new Date(d);
+  const day = d.getDay(),
+    diff = d.getDate() - day + 1; // adjust when day is sunday
+  return new Date(d.setDate(diff));
+}
+
+export function getFriday(d: Date | string) {
+  d = getMonday(d)
+  const diff = d.getDate() + 4
+  return new Date(d.setDate(diff));
+}
+
+export function getWeekDates(date: Date | string) {
+  return {from: getMonday(date), till: getFriday(date)}
+}
+
+export function getTimeFromDate(dateString: Date | string) {
+  const date = new Date(dateString)
+  let minutes = date.getMinutes().toString()
+  if(minutes.length === 1)
+    minutes = '0' + minutes
+  return `${date.getHours()}:${minutes}`
+}

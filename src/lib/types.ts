@@ -1,3 +1,5 @@
+import type { Event } from "react-big-calendar"
+
 export type Group = {
   id: string,
   name: string
@@ -93,4 +95,8 @@ export type CoursesAndTheirGroups = {
 
 export interface GroupWihtSelection extends GroupLecture {
   selected: boolean
+}
+
+export interface MyEvent extends Event {
+  lecture: LectureWise
 }

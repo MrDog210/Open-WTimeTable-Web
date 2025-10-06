@@ -34,7 +34,7 @@ type GroupSelectProps = {
 function GroupSelect({course, selectedGroups: selectedCourses, setSelectedGroups: setSelectedCourses}: GroupSelectProps) {
   const options = course.groups.map((g): MultiSelectOption => ({
     label: g.name,
-    value: String(g.id)
+    value: g.id as unknown as string
   }))
   console.log(course.course.course, selectedCourses)
 
@@ -44,6 +44,7 @@ function GroupSelect({course, selectedGroups: selectedCourses, setSelectedGroups
       <MultiSelect 
         options={options}
         value={selectedCourses}
+        defaultValue={selectedCourses}
         onValueChange={setSelectedCourses}
       />
     </>

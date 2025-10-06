@@ -5,35 +5,80 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useQuery } from '@tanstack/react-query'
 import { useSettings } from '@/context/UserSettingsContext'
 import stringHash from 'string-hash'
+import { getWeekDates } from '@/lib/date'
+import { fetchLecturesForGroups } from '@/lib/http/api'
+import { getSchoolInfo } from '@/stores/schoolData'
+import { getDistinctSelectedGroups } from '@/lib/timetableUtils'
+import type { MyEvent } from '@/lib/types'
+import TimetableEvent from './TimetableEvent'
+import "./Timetable.module.css"
 
+const { schoolCode } = getSchoolInfo()
 const localizer = dayjsLocalizer(dayjs)
 
 function Timetable() {
-  const { selectedGroups } = useSettings()
+  const { selectedGroups, defaultTimetableView, changeSettings } = useSettings()
   const [date, setDate] = useState(new Date())
-  const { data: events } = useQuery<Event[]>({
+  const { data: events } = useQuery<MyEvent[]>({
     initialData: [],
     queryFn: async () => {
-      return [{
-        title: 'test',
-        start: dayjs().add(1, 'hour').toDate(),
-        end: dayjs().subtract(1, 'hour').toDate()
-      }]
+      const distinctGroups = getDistinctSelectedGroups(selectedGroups) as unknown as number[]
+      const {from, till} = getWeekDates(date)
+      return (await fetchLecturesForGroups(schoolCode, distinctGroups.map(id => ({ id })), from, till))
+        .filter(({groups, courseId, course}) => {
+          for(const group of groups)
+            if(course === '' || selectedGroups[courseId] && selectedGroups[courseId].includes(group.id))
+              return true
+          return false
+        })
+        .map(lecture => ({
+          lecture,
+          start: new Date(lecture.start_time),
+          end: new Date(lecture.end_time)
+        }))
     },
     queryKey: [ 'lectures', stringHash(JSON.stringify(selectedGroups)), date ]
   })
-
+const eventWrapper = (props) => {
+   return <div ref={node => {
+      const eventEl = node?.querySelector(".rbc-event");
+      // Do whatever you want with the actual .rbc-event div   
+      }}>
+       {props.children} 
+    </div>
+}
   return (
     <Calendar
+      key={defaultTimetableView}
       localizer={localizer}
       events={events}
       date={date}
       onNavigate={setDate}
-      defaultView='work_week'
+      defaultView={defaultTimetableView}
+      onView={(v) => changeSettings({
+        defaultTimetableView: v as unknown as any
+      })}
       views={["work_week", "day"]}
       className='h-screen'
       min={new Date(1972, 0, 1, 6, 0, 0, 0)}
       max={new Date(1972, 0, 1, 23, 0, 0, 0)}
+      timeslots={1}
+      step={60}
+      selectable={false}
+
+      components={{
+        event: TimetableEvent,
+        //eventWrapper: ({children, style}) => <div style={style}>{children}</div>
+      }}
+      eventPropGetter={(event) => ({
+        style: {
+          backgroundColor: 'transparent',
+          border: 'none',
+          boxShadow: 'none',
+          padding: 0,
+          color: 'inherit',
+        },
+      })}
     />
   )
 }

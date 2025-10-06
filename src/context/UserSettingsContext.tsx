@@ -19,21 +19,14 @@ function loadSettings() {
 
 const ThemeContext = createContext<SettingsContextType | null>(null)
 
-export const DefaultView = {
-  WEEK_VIEW: 0,
-  DAY_VIEW: 1,
-} as const
-
-export type DefaultView = typeof DefaultView[keyof typeof DefaultView]
-
 export type SelectedGroups = { // key is courseId, each index is the group id
   [key: string]: string[];
 }
 
 const DEFAULT_VALUES: SavedSettings = {
-  defaultView: DefaultView.DAY_VIEW,
+  defaultTimetableView: "work_week",
   hasCompletedSetup: false,
-  selectedGroups: {}
+  selectedGroups: {},
 }
 
 export function useSettings() {
@@ -47,7 +40,7 @@ export function useSettings() {
 
 type SavedSettings = {
   hasCompletedSetup: boolean,
-  defaultView: DefaultView,
+  defaultTimetableView: "day" | "work_week",
   selectedGroups: SelectedGroups
   //language: // TODO: add multiple language support
 }
