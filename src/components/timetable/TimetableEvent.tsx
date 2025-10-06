@@ -14,19 +14,17 @@ function TimetableEvent({ event }: TimetableEventProps) {
 
   return (
     <Card className="w-full h-full absolute left-0 top-0 p-1">
-      <div className="flex flex-col">
-        <div className="flex flex-1 justify-between">
-          <div className="">{course}</div>
+      <div className="flex flex-col flex-1">
+        <div className="flex">
+          <div className="font-bold flex-1">{course ? course : eventType}</div>
           <div>{executionType}</div>
         </div>
-        <div>
-          <div>{`${getTimeFromDate(start_time)} - ${getTimeFromDate(end_time)}`}</div>
+        <div className="flex-1">
+          <div className="text-sm">{`${getTimeFromDate(start_time)} - ${getTimeFromDate(end_time)}`}</div>
           <div>{formatArray(rooms, 'name')}</div>
           <div>{formatArray(lecturers, 'name')}</div>
         </div>
-        <div>
-          { colorText && <div style={{alignSelf: 'end', color: hexColor}}>{colorText}</div>}
-        </div>
+        { colorText && <div style={{alignSelf: 'end', color: hexColor}}>{colorText}</div>}
       </div>
     </Card>
   )

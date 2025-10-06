@@ -19,11 +19,11 @@ const localizer = dayjsLocalizer(dayjs)
 function Timetable() {
   const { selectedGroups, defaultTimetableView, changeSettings } = useSettings()
   const [date, setDate] = useState(new Date())
+  const {from, till} = getWeekDates(date)
   const { data: events } = useQuery<MyEvent[]>({
     initialData: [],
     queryFn: async () => {
       const distinctGroups = getDistinctSelectedGroups(selectedGroups) as unknown as number[]
-      const {from, till} = getWeekDates(date)
       return (await fetchLecturesForGroups(schoolCode, distinctGroups.map(id => ({ id })), from, till))
         .filter(({groups, courseId, course}) => {
           for(const group of groups)
@@ -37,7 +37,7 @@ function Timetable() {
           end: new Date(lecture.end_time)
         }))
     },
-    queryKey: [ 'lectures', stringHash(JSON.stringify(selectedGroups)), date ]
+    queryKey: [ 'lectures', stringHash(JSON.stringify(selectedGroups)), dayjs(from).format('DD/MM/YYYY'), dayjs(till).format('DD/MM/YYYY') ]
   })
 const eventWrapper = (props) => {
    return <div ref={node => {
