@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 import { Loader2Icon } from "lucide-react"
 import { useWizard } from "react-use-wizard"
+import banner from '@/assets/banner.webp'
 
 function SchoolCodeInputPage() {
   const [code, setCode] = useState('')
@@ -27,8 +28,9 @@ function SchoolCodeInputPage() {
   })
   
   return (
-    <div className="flex h-screen flex-col justify-center items-center gap-4 ">
-      <form className="flex flex-col gap-4 w-100" onSubmit={(e) => {
+    <div className="flex h-screen flex-col justify-center items-center gap-5">
+      <img src={banner} alt="banner" className="p-5 md:max-w-130"/>
+      <form className="flex flex-col gap-4 w-screen md:max-w-100 p-5 max-w-sm" onSubmit={(e) => {
         e.preventDefault()
         if(schoolInfoMutation.isPending) return
         schoolInfoMutation.mutate()
