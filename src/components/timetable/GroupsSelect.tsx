@@ -1,8 +1,10 @@
 import type { CoursesAndTheirGroups } from "@/lib/types"
 import { MultiSelect, type MultiSelectOption } from "../ui/multi-select"
-import type { SelectedGroups } from "@/context/UserSettingsContext"
+import { useSettings, type SelectedGroups } from "@/context/UserSettingsContext"
 import { useQuery } from "@tanstack/react-query"
 import { fetchCoursesAndTheirGroups } from "@/lib/timetableUtils"
+import { Button } from "../ui/button"
+import { Loader2Icon } from "lucide-react"
 
 type GroupsSelectProps = {
   selectedGroups: SelectedGroups
@@ -10,17 +12,36 @@ type GroupsSelectProps = {
 }
 
 function GroupsSelect({selectedGroups, setSelectedGroup}: GroupsSelectProps) {
+  const { changeSettings } = useSettings()
   
   const { data: coursesAndGroups } = useQuery({
     queryFn: fetchCoursesAndTheirGroups,
     queryKey: ['coursesAndGroups']
   })
 
+  function deselectAllGroups() {
+    changeSettings({
+      selectedGroups: {}
+    })
+  }
+
+  function selectAllGroups() {
+    if(!coursesAndGroups) return
+    for(const course of coursesAndGroups) {
+      console.log(course)
+      setSelectedGroup(course.course.id, course.groups.map(c => c.id as any))
+    }
+  }
+
   if(!coursesAndGroups)
-    return <>LOADINMFG!!!!</>
+    return (
+      <div className="flex flex-1 justify-center">
+        <Loader2Icon className="animate-spin" />
+      </div>
+    )
 
   return (
-    <>
+    <div className="flex flex-col gap-1.5">
       {
         coursesAndGroups.map((c) => <GroupSelect key={c.course.id}
           course={c} 
@@ -28,7 +49,11 @@ function GroupsSelect({selectedGroups, setSelectedGroup}: GroupsSelectProps) {
           setSelectedGroups={(ids) => setSelectedGroup(c.course.id, ids)}  
         />)
       }
-    </>
+      <div className="flex flex-1 justify-end gap-2 pt-1">
+        <Button onClick={selectAllGroups}>Select all</Button>
+        <Button onClick={deselectAllGroups} variant="destructive">Unselect all</Button>
+      </div>
+    </div>
   )
 }
 
@@ -45,10 +70,9 @@ function GroupSelect({course, selectedGroups: selectedCourses, setSelectedGroups
     label: g.name,
     value: g.id as unknown as string
   }))
-  console.log(course.course.course, selectedCourses)
 
   return (
-    <>
+    <div>
       <h2>{course.course.course}</h2>
       <MultiSelect 
         options={options}
@@ -56,6 +80,6 @@ function GroupSelect({course, selectedGroups: selectedCourses, setSelectedGroups
         defaultValue={selectedCourses}
         onValueChange={setSelectedCourses}
       />
-    </>
+    </div>
   )
 }

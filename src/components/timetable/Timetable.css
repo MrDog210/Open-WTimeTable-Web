@@ -35,7 +35,7 @@
 }
 
 .rbc-timeslot-group {
-  min-height: 65px;
+  min-height: 70px;
 }
 
 .rbc-header {
@@ -85,4 +85,8 @@
 
 .rbc-current-time-indicator {
   background-color: var(--color-muted-foreground);
+}
+
+.rbc-time-view * {
+  border-color: var(--color-ring) !important;
 }

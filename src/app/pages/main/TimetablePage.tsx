@@ -9,14 +9,14 @@ import { fetchLecturesForGroups } from "@/lib/http/api"
 import { exportDataToIcs, filterLecturesBySelectedGroups, getDistinctSelectedGroups, stringToFile } from "@/lib/timetableUtils"
 import { getSchoolInfo } from "@/stores/schoolData"
 import { useMutation } from "@tanstack/react-query"
-import { Bug, Coffee, FileDown, Github, Loader2Icon, Settings } from "lucide-react"
+import { Bug, Coffee, FileDown, Github, Loader2Icon, RotateCcw, Settings } from "lucide-react"
 import { useState } from "react"
 
 const { schoolCode } = getSchoolInfo()
 
 function TimetablePage() {
-  const { selectedGroups, changeSelectedGroups } = useSettings()
-  const [ settingsOpen, setSettingsOpen ] = useState(false)
+  const { selectedGroups, changeSelectedGroups, reset } = useSettings()
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [date, setDate] = useState(new Date())
   
   const exportDataMutaion = useMutation({
@@ -43,7 +43,7 @@ function TimetablePage() {
       <div className="flex gap-2 m-5 mb-0">
         <Button variant="outline" onClick={() => setSettingsOpen(!settingsOpen)}>
           <Settings />
-          Settings
+          Change groups
         </Button>
         <Button variant="outline" disabled={exportDataMutaion.isPending} onClick={() => exportDataMutaion.mutateAsync({ period: 'week' })}>
           { exportDataMutaion.isPending ? <Loader2Icon className="animate-spin" /> : <FileDown />}
@@ -52,6 +52,11 @@ function TimetablePage() {
         <Button variant="outline" disabled={exportDataMutaion.isPending} onClick={() => exportDataMutaion.mutateAsync({ period: 'all' })}>
           { exportDataMutaion.isPending ? <Loader2Icon className="animate-spin" /> : <FileDown />}
           Export semester
+        </Button>
+        <div className="flex-1" />
+        <Button variant={"destructive"} onClick={reset}>
+          <RotateCcw />
+          Reset
         </Button>
       </div>
       { settingsOpen && 
@@ -62,9 +67,9 @@ function TimetablePage() {
         </Card>}
       <Timetable date={date} setDate={setDate} />
       <div className="flex gap-5 justify-center m-5">
-        <Button onClick={() => window.open(GITHUB_REPO, "_blank")} variant="ghost"><Github />View source code</Button>
-        <Button onClick={() => window.open(GITHUB_ISSUE, "_blank")} variant="ghost"><Bug />Report an issue or suggest a feature</Button>
-        <Button onClick={() => window.open(DONATION_LINK, "_blank")} variant="ghost"><Coffee />Support me</Button>
+        <Button onClick={() => window.open(GITHUB_REPO, "_blank")} variant="link"><Github />View source code</Button>
+        <Button onClick={() => window.open(GITHUB_ISSUE, "_blank")} variant="link"><Bug />Report an issue or suggest a feature</Button>
+        <Button onClick={() => window.open(DONATION_LINK, "_blank")} variant="link"><Coffee />Support me</Button>
       </div>
     </div>
   )

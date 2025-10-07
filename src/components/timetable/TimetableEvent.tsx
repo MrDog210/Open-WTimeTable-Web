@@ -13,7 +13,7 @@ function TimetableEvent({ event }: TimetableEventProps) {
   const hexColor = (color === null || color === '') ? undefined : `#${color}`
 
   return (
-    <Card className="w-full h-full absolute left-0 top-0 p-1">
+    <Card className="w-full h-full absolute left-0 top-0 p-2">
       <div className="flex flex-col flex-1">
         <div className="flex">
           <div className="font-bold flex-1">{course ? course : eventType}</div>
