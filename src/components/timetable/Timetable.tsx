@@ -13,6 +13,7 @@ import type { MyEvent } from '@/lib/types'
 import TimetableEvent from './TimetableEvent'
 import "./Timetable.css"
 import TimetableToolbar from './TimetableToolbar'
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, DialogHeader } from '../ui/dialog'
 
 const { schoolCode } = getSchoolInfo()
 const localizer = dayjsLocalizer(dayjs)
@@ -59,46 +60,60 @@ function Timetable({ date, setDate }: TimetableProps) {
   })
 
   return (
-    <Calendar
-      key={defaultTimetableView}
-      localizer={localizer}
-      events={events}
-      date={date}
-      onNavigate={setDate}
-      defaultView={defaultTimetableView}
-      onView={(v) => changeSettings({
-        defaultTimetableView: v as any
-      })}
-      views={["work_week", "day"]}
-      className='h-screen'
-      min={new Date(1972, 0, 1, 6, 0, 0, 0)}
-      max={new Date(1972, 0, 1, 23, 0, 0, 0)}
-      timeslots={1}
-      step={60}
-      selectable={false}
+    <>
+      <Dialog>
+        <DialogTrigger>Open</DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete your account
+              and remove your data from our servers.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+      <Calendar
+        key={defaultTimetableView}
+        localizer={localizer}
+        events={events}
+        date={date}
+        onNavigate={setDate}
+        defaultView={defaultTimetableView}
+        onView={(v) => changeSettings({
+          defaultTimetableView: v as any
+        })}
+        views={["work_week", "day"]}
+        className='h-screen'
+        min={new Date(1972, 0, 1, 6, 0, 0, 0)}
+        max={new Date(1972, 0, 1, 23, 0, 0, 0)}
+        timeslots={1}
+        step={60}
+        selectable={false}
 
-      components={{
-        event: TimetableEvent,
-        //eventWrapper: ({children, style}) => <div style={style}>{children}</div>
-        dateCellWrapper: () => <div className='hidden'></div>,
-        toolbar: TimetableToolbar as any,
-        //dayColumnWrapper: ({children}) => <div>{children}</div>
+        components={{
+          event: TimetableEvent,
+          //eventWrapper: ({children, style}) => <div style={style}>{children}</div>
+          dateCellWrapper: () => <div className='hidden'></div>,
+          toolbar: TimetableToolbar as any,
+          //dayColumnWrapper: ({children}) => <div>{children}</div>
 
-      }}
-      eventPropGetter={() => ({
-        style: {
-          backgroundColor: 'transparent',
-          border: 'none',
-          boxShadow: 'none',
-          padding: 0,
-          color: 'inherit',
-        },
-      })}
-      formats={{
-        eventTimeRangeEndFormat: () => "",
-        timeGutterFormat: (date) => dayjs(date).format("HH:mm"),
-      }}
-    />
+        }}
+        eventPropGetter={() => ({
+          style: {
+            backgroundColor: 'transparent',
+            border: 'none',
+            boxShadow: 'none',
+            padding: 0,
+            color: 'inherit',
+          },
+        })}
+        formats={{
+          eventTimeRangeEndFormat: () => "",
+          timeGutterFormat: (date) => dayjs(date).format("HH:mm"),
+        }}
+      />
+    </>
   )
 }
 
