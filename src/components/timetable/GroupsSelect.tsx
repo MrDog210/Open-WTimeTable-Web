@@ -1,19 +1,28 @@
 import type { CoursesAndTheirGroups } from "@/lib/types"
 import { MultiSelect, type MultiSelectOption } from "../ui/multi-select"
 import type { SelectedGroups } from "@/context/UserSettingsContext"
+import { useQuery } from "@tanstack/react-query"
+import { fetchCoursesAndTheirGroups } from "@/lib/timetableUtils"
 
 type GroupsSelectProps = {
-  courses: CoursesAndTheirGroups[]
   selectedGroups: SelectedGroups
   setSelectedGroup: (courseId: string, selectedGroups: string[]) => void
 }
 
-function GroupsSelect({courses, selectedGroups, setSelectedGroup}: GroupsSelectProps) {
+function GroupsSelect({selectedGroups, setSelectedGroup}: GroupsSelectProps) {
+  
+  const { data: coursesAndGroups } = useQuery({
+    queryFn: fetchCoursesAndTheirGroups,
+    queryKey: ['coursesAndGroups']
+  })
+
+  if(!coursesAndGroups)
+    return <>LOADINMFG!!!!</>
 
   return (
     <>
       {
-        courses.map((c) => <GroupSelect key={c.course.id}
+        coursesAndGroups.map((c) => <GroupSelect key={c.course.id}
           course={c} 
           selectedGroups={selectedGroups[c.course.id]}
           setSelectedGroups={(ids) => setSelectedGroup(c.course.id, ids)}  
