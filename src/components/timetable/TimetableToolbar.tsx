@@ -9,7 +9,7 @@ interface TimetableToolbarProps extends Omit<ToolbarProps, "views"> {
 function TimetableToolbar({date, label, localizer, onNavigate, onView, view}: TimetableToolbarProps) {
 
   return (
-    <div className="flex justify-between items-center p-5 flex-col sm:flex-row gap-2">
+    <div className="flex justify-between items-center p-5 flex-col sm:flex-row gap-2 pt-2.5">
       <ButtonGroup>
         <Button onClick={() => onNavigate("PREV")} variant="outline">Previous</Button>
         <Button onClick={() => onNavigate("TODAY")} variant="outline">Today</Button>

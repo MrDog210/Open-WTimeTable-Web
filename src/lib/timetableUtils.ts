@@ -95,3 +95,50 @@ export function formatArray(array: { [key: string]: any }[], key: string) {
 
   return string
 }
+
+import ical, { ICalCalendarMethod } from 'ical-generator';
+
+export function exportDataToIcs(lectures: LectureWise[]) {
+  const calendar = ical({ name: 'OPEN WTT EXPORT' });
+  calendar.method(ICalCalendarMethod.ADD);
+
+  for(const { start_time, end_time, course, groups, rooms, lecturers, executionType, showLink } of lectures) {
+    calendar.createEvent({
+      start: start_time,
+      end: end_time,
+      summary: `${course} - ${executionType}`,
+      description: '',
+      url: showLink,
+      location: formatArray(rooms, "name"),
+      //organizer: formatArray(lecturers, "name")
+   });
+  }
+
+  return calendar
+}
+
+export function stringToFile(data: string, type: 'text/calendar', fileName: string) {
+    const blob = new Blob([data], { type });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+
+    document.body.appendChild(link);
+    link.click(); 
+
+    // Clean up the temporary elements
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+export function filterLecturesBySelectedGroups(lectures: LectureWise[], selectedGroups: SelectedGroups) {
+  return lectures.filter(({groups, courseId, course}) => {
+    if(course === '') return true
+    for(const group of groups)
+      if(selectedGroups[courseId] && selectedGroups[courseId].includes(group.id as any))
+        return true
+    return false
+  })
+}

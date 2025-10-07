@@ -2,13 +2,13 @@ import { Calendar, dayjsLocalizer, type Event } from 'react-big-calendar'
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useSettings } from '@/context/UserSettingsContext'
 import stringHash from 'string-hash'
 import { getWeekDates } from '@/lib/date'
 import { fetchLecturesForGroups } from '@/lib/http/api'
 import { getSchoolInfo } from '@/stores/schoolData'
-import { getDistinctSelectedGroups } from '@/lib/timetableUtils'
+import { filterLecturesBySelectedGroups, getDistinctSelectedGroups } from '@/lib/timetableUtils'
 import type { MyEvent } from '@/lib/types'
 import TimetableEvent from './TimetableEvent'
 import "./Timetable.css"
@@ -17,7 +17,12 @@ import TimetableToolbar from './TimetableToolbar'
 const { schoolCode } = getSchoolInfo()
 const localizer = dayjsLocalizer(dayjs)
 
-function Timetable() {
+type TimetableProps = {
+  date: Date,
+  setDate: (d: Date) => void
+}
+
+function Timetable({ date, setDate }: TimetableProps) {
   // Sync scrolling of time header and time content
   useEffect(() => {
     const s1 = document.getElementsByClassName('rbc-time-header')[0] as HTMLElement | undefined;
@@ -38,20 +43,12 @@ function Timetable() {
   }, []);
 
   const { selectedGroups, defaultTimetableView, changeSettings } = useSettings()
-  const [date, setDate] = useState(new Date())
   const {from, till} = getWeekDates(date)
   const { data: events, isFetching } = useQuery<MyEvent[]>({
     initialData: [],
     queryFn: async () => {
       const distinctGroups = getDistinctSelectedGroups(selectedGroups) as unknown as number[]
-      return (await fetchLecturesForGroups(schoolCode, distinctGroups.map(id => ({ id })), from, till))
-        .filter(({groups, courseId, course}) => {
-          if(course === '') return true
-          for(const group of groups)
-            if(selectedGroups[courseId] && selectedGroups[courseId].includes(group.id))
-              return true
-          return false
-        })
+      return filterLecturesBySelectedGroups((await fetchLecturesForGroups(schoolCode, distinctGroups.map(id => ({ id })), from, till)), selectedGroups) 
         .map(lecture => ({
           lecture,
           start: new Date(lecture.start_time),

@@ -3,8 +3,8 @@ export const API_URL = `${HTTP_PROXY}https://wise-tt.com/WTTWebRestAPI/ws/rest/`
 export const USERNAME = import.meta.env.VITE_USERNAME
 export const PASSWORD = import.meta.env.VITE_PASSWORD
 
-export const GITHUB_REPO = 'https://github.com/MrDog210/Open-WTimeTable'
-export const GITHUB_ISSUE = 'https://github.com/MrDog210/Open-WTimeTable/issues/new'
+export const GITHUB_REPO = 'https://github.com/MrDog210/Open-WTimeTable-Web'
+export const GITHUB_ISSUE = 'https://github.com/MrDog210/Open-WTimeTable-Web/issues/new'
 export const LICENSE = 'https://github.com/MrDog210/Open-WTimeTable/blob/master/LICENSE'
 export const CONTR_MRDOG210 = 'https://github.com/MrDog210'
 export const CONTR_MZHAP = 'https://github.com/mzHap'

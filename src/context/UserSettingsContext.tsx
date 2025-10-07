@@ -41,14 +41,15 @@ export function useSettings() {
 type SavedSettings = {
   hasCompletedSetup: boolean,
   defaultTimetableView: "day" | "work_week",
-  selectedGroups: SelectedGroups
+  selectedGroups: SelectedGroups,
   //language: // TODO: add multiple language support
 }
 
 export interface SettingsContextType extends SavedSettings {
   isLoading: boolean
   changeSettings: (settings: Partial<SavedSettings>) => unknown
-  changeSelectedGroups: (courseId: string, selectedGroups: string[]) => void
+  changeSelectedGroups: (courseId: string, selectedGroups: string[]) => void,
+  reset: () => void
 }
 
 let didInit = false;
@@ -56,7 +57,7 @@ let didInit = false;
 function UserSettingsContextProvider({children}: {children: ReactNode}) {
   const [isLoading, setIsLoading] = useState(true)
   const [settings, setSettings] = useState<SavedSettings>(DEFAULT_VALUES)
-  // TODO: move splash screen and loading block here
+
   useEffect(() => {
     function loadAndSetSettings() {
       const savedSettings = loadSettings()
@@ -79,21 +80,28 @@ function UserSettingsContextProvider({children}: {children: ReactNode}) {
   }
 
   function changeSelectedGroups(courseId: string, selectedGroups: string[]) {
-    console.log("changing selected groups", selectedGroups)
     changeSettings({
       selectedGroups: {
         ...settings.selectedGroups,
         [courseId]: selectedGroups
       }
     })
-    console.log(settings.selectedGroups)
+  }
+
+  function reset() {
+    localStorage.clear()
+    changeSettings({
+      hasCompletedSetup: false,
+      selectedGroups: {}
+    })
   }
 
   const ctx: SettingsContextType = {
     isLoading,
     ...settings,
     changeSettings,
-    changeSelectedGroups
+    changeSelectedGroups,
+    reset
   }
   
   if(isLoading)
