@@ -12,6 +12,7 @@ import { getDistinctSelectedGroups } from '@/lib/timetableUtils'
 import type { MyEvent } from '@/lib/types'
 import TimetableEvent from './TimetableEvent'
 import "./Timetable.css"
+import TimetableToolbar from './TimetableToolbar'
 
 const { schoolCode } = getSchoolInfo()
 const localizer = dayjsLocalizer(dayjs)
@@ -39,7 +40,7 @@ function Timetable() {
   const { selectedGroups, defaultTimetableView, changeSettings } = useSettings()
   const [date, setDate] = useState(new Date())
   const {from, till} = getWeekDates(date)
-  const { data: events } = useQuery<MyEvent[]>({
+  const { data: events, isFetching } = useQuery<MyEvent[]>({
     initialData: [],
     queryFn: async () => {
       const distinctGroups = getDistinctSelectedGroups(selectedGroups) as unknown as number[]
@@ -69,7 +70,7 @@ function Timetable() {
       onNavigate={setDate}
       defaultView={defaultTimetableView}
       onView={(v) => changeSettings({
-        defaultTimetableView: v as unknown as any
+        defaultTimetableView: v as any
       })}
       views={["work_week", "day"]}
       className='h-screen'
@@ -82,8 +83,8 @@ function Timetable() {
       components={{
         event: TimetableEvent,
         //eventWrapper: ({children, style}) => <div style={style}>{children}</div>
-        //toolbar: ({}) => <></>, // TODO: REPLACE BUTTONS
         dateCellWrapper: () => <div className='hidden'></div>,
+        toolbar: TimetableToolbar as any,
         //dayColumnWrapper: ({children}) => <div>{children}</div>
 
       }}
