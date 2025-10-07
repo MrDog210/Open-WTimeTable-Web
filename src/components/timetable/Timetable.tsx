@@ -1,5 +1,5 @@
 import { Calendar, dayjsLocalizer, type Event } from 'react-big-calendar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useQuery } from '@tanstack/react-query'
@@ -11,12 +11,31 @@ import { getSchoolInfo } from '@/stores/schoolData'
 import { getDistinctSelectedGroups } from '@/lib/timetableUtils'
 import type { MyEvent } from '@/lib/types'
 import TimetableEvent from './TimetableEvent'
-import "./Timetable.module.css"
+import "./Timetable.css"
 
 const { schoolCode } = getSchoolInfo()
 const localizer = dayjsLocalizer(dayjs)
 
 function Timetable() {
+  // Sync scrolling of time header and time content
+  useEffect(() => {
+    const s1 = document.getElementsByClassName('rbc-time-header')[0] as HTMLElement | undefined;
+    const s2 = document.getElementsByClassName('rbc-time-content')[0] as HTMLElement | undefined;
+
+    if (!s1 || !s2) return;
+
+    const syncS1 = () => { s2.scrollTop = s1.scrollTop; };
+    const syncS2 = () => { s1.scrollTop = s2.scrollTop; };
+
+    s1.addEventListener('scroll', syncS1, false);
+    s2.addEventListener('scroll', syncS2, false);
+
+    return () => {
+      s1.removeEventListener('scroll', syncS1, false);
+      s2.removeEventListener('scroll', syncS2, false);
+    };
+  }, []);
+
   const { selectedGroups, defaultTimetableView, changeSettings } = useSettings()
   const [date, setDate] = useState(new Date())
   const {from, till} = getWeekDates(date)
@@ -26,8 +45,9 @@ function Timetable() {
       const distinctGroups = getDistinctSelectedGroups(selectedGroups) as unknown as number[]
       return (await fetchLecturesForGroups(schoolCode, distinctGroups.map(id => ({ id })), from, till))
         .filter(({groups, courseId, course}) => {
+          if(course === '') return true
           for(const group of groups)
-            if(course === '' || selectedGroups[courseId] && selectedGroups[courseId].includes(group.id))
+            if(selectedGroups[courseId] && selectedGroups[courseId].includes(group.id))
               return true
           return false
         })
@@ -39,14 +59,7 @@ function Timetable() {
     },
     queryKey: [ 'lectures', stringHash(JSON.stringify(selectedGroups)), dayjs(from).format('DD/MM/YYYY'), dayjs(till).format('DD/MM/YYYY') ]
   })
-const eventWrapper = (props) => {
-   return <div ref={node => {
-      const eventEl = node?.querySelector(".rbc-event");
-      // Do whatever you want with the actual .rbc-event div   
-      }}>
-       {props.children} 
-    </div>
-}
+
   return (
     <Calendar
       key={defaultTimetableView}
@@ -69,8 +82,12 @@ const eventWrapper = (props) => {
       components={{
         event: TimetableEvent,
         //eventWrapper: ({children, style}) => <div style={style}>{children}</div>
+        //toolbar: ({}) => <></>, // TODO: REPLACE BUTTONS
+        dateCellWrapper: () => <div className='hidden'></div>,
+        //dayColumnWrapper: ({children}) => <div>{children}</div>
+
       }}
-      eventPropGetter={(event) => ({
+      eventPropGetter={() => ({
         style: {
           backgroundColor: 'transparent',
           border: 'none',
@@ -79,6 +96,10 @@ const eventWrapper = (props) => {
           color: 'inherit',
         },
       })}
+      formats={{
+        eventTimeRangeEndFormat: () => "",
+        timeGutterFormat: (date) => dayjs(date).format("HH:mm"),
+      }}
     />
   )
 }
