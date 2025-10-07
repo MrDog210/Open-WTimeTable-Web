@@ -25,12 +25,15 @@ function GroupsSelect({selectedGroups, setSelectedGroup}: GroupsSelectProps) {
     })
   }
 
-  function selectAllGroups() {
+  async function selectAllGroups() {
     if(!coursesAndGroups) return
-    for(const course of coursesAndGroups) {
-      console.log(course)
-      setSelectedGroup(course.course.id, course.groups.map(c => c.id as any))
-    }
+    const sg: SelectedGroups = {}
+    for(const course of coursesAndGroups) 
+      sg[course.course.id] = course.groups.map(c => c.id as unknown as string)
+
+    changeSettings({
+      selectedGroups: sg
+    })
   }
 
   if(!coursesAndGroups)

@@ -49,7 +49,7 @@
 
 .rbc-time-header {
   max-width: 100%;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .rbc-time-header-content {

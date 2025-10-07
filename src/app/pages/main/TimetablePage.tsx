@@ -40,7 +40,7 @@ function TimetablePage() {
 
   return (
     <div>
-      <div className="flex gap-2 m-5 mb-0">
+      <div className="flex gap-2 m-5 mb-0 flex-wrap">
         <Button variant="outline" onClick={() => setSettingsOpen(!settingsOpen)}>
           <Settings />
           Change groups
@@ -66,7 +66,7 @@ function TimetablePage() {
           </CardContent>
         </Card>}
       <Timetable date={date} setDate={setDate} />
-      <div className="flex gap-5 justify-center m-5">
+      <div className="flex gap-5 justify-center m-5 flex-wrap">
         <Button onClick={() => window.open(GITHUB_REPO, "_blank")} variant="link"><Github />View source code</Button>
         <Button onClick={() => window.open(GITHUB_ISSUE, "_blank")} variant="link"><Bug />Report an issue or suggest a feature</Button>
         <Button onClick={() => window.open(DONATION_LINK, "_blank")} variant="link"><Coffee />Support me</Button>

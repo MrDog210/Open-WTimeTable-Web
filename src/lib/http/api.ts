@@ -50,7 +50,8 @@ export async function fetchNotifications() { // ?????????
 
 // dates are INCLUSIVE
 export async function fetchLecturesForGroups(schoolCode: string, groups: { id: number }[], startDate: Date, endDate: Date) {
-  const url = await getServerUrl()                                                     
+  if(groups.length === 0) return []
+  const url = getServerUrl()                                                
 
   let allGroupsId = ''
 
