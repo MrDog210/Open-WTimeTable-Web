@@ -103,6 +103,7 @@ export function exportDataToIcs(lectures: LectureWise[]) {
   calendar.method(ICalCalendarMethod.ADD);
 
   for(const { start_time, end_time, course, groups, rooms, lecturers, executionType, showLink } of lectures) {
+    const lecturersNames = formatArray(lecturers, "name") 
     calendar.createEvent({
       start: start_time,
       end: end_time,
@@ -110,7 +111,9 @@ export function exportDataToIcs(lectures: LectureWise[]) {
       description: '',
       url: showLink,
       location: formatArray(rooms, "name"),
-      //organizer: formatArray(lecturers, "name")
+      organizer: {
+        name: lecturersNames === "" ? "No lecturers" : lecturersNames
+      }
    });
   }
 

@@ -78,6 +78,7 @@ function GroupSelect({course, selectedGroups: selectedCourses, setSelectedGroups
     <div>
       <h2>{course.course.course}</h2>
       <MultiSelect 
+        maxCount={10}
         options={options}
         value={selectedCourses}
         defaultValue={selectedCourses}
