@@ -15,8 +15,8 @@ export default defineConfig({
     srcDir: 'src',
     manifest: {
       name: "Open Wise Timetable Web",
-      start_url: "/",
       short_name: "Opent WTT",
+      start_url: "/Open-WTimeTable-Web/",
       description: "Web app to view and customize wise lectures",
       theme_color: "oklch(0.145 0 0)",
       icons: [
@@ -45,7 +45,7 @@ export default defineConfig({
         type: 'module',
       },
   })],
-  base: "https://mrdog210.github.io/Open-WTimeTable-Web/",
+  base: "/Open-WTimeTable-Web/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
