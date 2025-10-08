@@ -21,12 +21,12 @@ export default defineConfig({
       theme_color: "oklch(0.145 0 0)",
       icons: [
         {
-          src: "/icon192.png",
+          src: "/Open-WTimeTable-Web/icon192.png",
           sizes: "192x192",
           type: "image/png"
         },
         {
-          src: "/icon512.png",
+          src: "/Open-WTimeTable-Web/icon512.png",
           sizes: "512x512",
           type: "image/png"
         }
