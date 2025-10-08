@@ -9,11 +9,12 @@ import { getWeekDates } from '@/lib/date'
 import { fetchLecturesForGroups } from '@/lib/http/api'
 import { getSchoolInfo } from '@/stores/schoolData'
 import { filterLecturesBySelectedGroups, getDistinctSelectedGroups } from '@/lib/timetableUtils'
-import type { MyEvent } from '@/lib/types'
+import type { LectureWise, MyEvent } from '@/lib/types'
 import TimetableEvent from './TimetableEvent'
 import "./Timetable.css"
 import TimetableToolbar from './TimetableToolbar'
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, DialogHeader } from '../ui/dialog'
+import LectureDialog from './LectureDIalog'
 
 const { schoolCode } = getSchoolInfo()
 const localizer = dayjsLocalizer(dayjs)
@@ -45,6 +46,8 @@ function Timetable({ date, setDate }: TimetableProps) {
 
   const { selectedGroups, defaultTimetableView, changeSettings } = useSettings()
   const {from, till} = getWeekDates(date)
+
+  const [selectedLecture, setSelectedLecture] = useState<LectureWise | undefined>(undefined)
   const { data: events, isFetching } = useQuery<MyEvent[]>({
     initialData: [],
     queryFn: async () => {
@@ -61,17 +64,8 @@ function Timetable({ date, setDate }: TimetableProps) {
 
   return (
     <>
-      <Dialog>
-        <DialogTrigger>Open</DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. This will permanently delete your account
-              and remove your data from our servers.
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
+      <Dialog open={!!selectedLecture} onOpenChange={() => setSelectedLecture(undefined)}>
+        <LectureDialog lecture={selectedLecture} />
       </Dialog>
       <Calendar
         key={defaultTimetableView}
@@ -83,6 +77,7 @@ function Timetable({ date, setDate }: TimetableProps) {
         onView={(v) => changeSettings({
           defaultTimetableView: v as any
         })}
+        onSelectEvent={(event) => setSelectedLecture(event.lecture)}
         views={["work_week", "day"]}
         className='h-screen'
         min={new Date(1972, 0, 1, 6, 0, 0, 0)}
@@ -90,7 +85,6 @@ function Timetable({ date, setDate }: TimetableProps) {
         timeslots={1}
         step={60}
         selectable={false}
-
         components={{
           event: TimetableEvent,
           //eventWrapper: ({children, style}) => <div style={style}>{children}</div>

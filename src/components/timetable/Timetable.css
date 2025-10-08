@@ -90,3 +90,11 @@
 .rbc-time-view * {
   border-color: var(--color-ring) !important;
 }
+
+.rbc-day-slot .rbc-events-container {
+  padding: 0 !important; /* Remove padding if it's acting as spacing */
+  margin: 0 !important; /* Remove margin */
+  margin-left: 0.5rem !important;
+  margin-right: 0.5rem !important;
+}
+
