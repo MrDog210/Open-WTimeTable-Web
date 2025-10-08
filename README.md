@@ -5,7 +5,8 @@
 ![GitHub License](https://img.shields.io/github/license/MrDog210/Open-WTimeTable-Web?style=for-the-badge)
 ![GitHub Repo stars](https://img.shields.io/github/stars/MrDog210/Open-WTimeTable-Web?style=for-the-badge)
 
-This is a website to view wise timetable lectures.  
+A better way to view your wise timetable lectures. Now finally available as a website. For the android app take a look [here](https://github.com/MrDog210/Open-WTimeTable).
+
 | Desktop                                    | Mobile                                    | Mobile day view                            |
 | ------------------------------------------ | ----------------------------------------- | ------------------------------------------ |
 | ![Desktop](assets/desktop.webp) | ![Mobile1](assets/mobile1.webp) | ![Mobile2](assets/mobile2.webp) |

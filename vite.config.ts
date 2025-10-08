@@ -45,6 +45,7 @@ export default defineConfig({
         type: 'module',
       },
   })],
+  base: "https://mrdog210.github.io/Open-WTimeTable-Web/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
