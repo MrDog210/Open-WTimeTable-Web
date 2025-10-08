@@ -80,14 +80,12 @@ function UserSettingsContextProvider({children}: {children: ReactNode}) {
   }
 
   function changeSelectedGroups(courseId: string, selectedGroups: string[]) {
-    //console.log(courseId, selectedGroups)
     changeSettings({
       selectedGroups: {
         ...settings.selectedGroups,
         [courseId]: selectedGroups
       }
     })
-console.log(settings.selectedGroups)
   }
 
   function reset() {

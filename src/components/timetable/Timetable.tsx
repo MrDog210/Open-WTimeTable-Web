@@ -16,7 +16,6 @@ import TimetableToolbar from './TimetableToolbar'
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, DialogHeader } from '../ui/dialog'
 import LectureDialog from './LectureDIalog'
 
-const { schoolCode } = getSchoolInfo()
 const localizer = dayjsLocalizer(dayjs)
 
 type TimetableProps = {
@@ -25,30 +24,17 @@ type TimetableProps = {
 }
 
 function Timetable({ date, setDate }: TimetableProps) {
-  // Sync scrolling of time header and time content
+  const { schoolCode } = getSchoolInfo()
+  
   useEffect(() => {
-    const s1 = document.getElementsByClassName('rbc-time-header')[0] as HTMLElement | undefined;
-    const s2 = document.getElementsByClassName('rbc-time-content')[0] as HTMLElement | undefined;
-
-    if (!s1 || !s2) return;
-
-    const syncS1 = () => { s2.scrollTop = s1.scrollTop; };
-    const syncS2 = () => { s1.scrollTop = s2.scrollTop; };
-
-    s1.addEventListener('scroll', syncS1, false);
-    s2.addEventListener('scroll', syncS2, false);
-
-    return () => {
-      s1.removeEventListener('scroll', syncS1, false);
-      s2.removeEventListener('scroll', syncS2, false);
-    };
+    return syncScrolling()
   }, []);
 
   const { selectedGroups, defaultTimetableView, changeSettings } = useSettings()
   const {from, till} = getWeekDates(date)
 
   const [selectedLecture, setSelectedLecture] = useState<LectureWise | undefined>(undefined)
-  const { data: events, isFetching } = useQuery<MyEvent[]>({
+  const { data: events } = useQuery<MyEvent[]>({
     initialData: [],
     queryFn: async () => {
       const distinctGroups = getDistinctSelectedGroups(selectedGroups) as unknown as number[]
@@ -112,3 +98,21 @@ function Timetable({ date, setDate }: TimetableProps) {
 }
 
 export default Timetable
+
+function syncScrolling() {
+  const s1 = document.getElementsByClassName('rbc-time-header')[0] as HTMLElement | undefined;
+  const s2 = document.getElementsByClassName('rbc-time-content')[0] as HTMLElement | undefined;
+
+  if (!s1 || !s2) return;
+
+  const syncS1 = () => { s2.scrollTop = s1.scrollTop; };
+  const syncS2 = () => { s1.scrollTop = s2.scrollTop; };
+
+  s1.addEventListener('scroll', syncS1, false);
+  s2.addEventListener('scroll', syncS2, false);
+
+  return () => {
+    s1.removeEventListener('scroll', syncS1, false);
+    s2.removeEventListener('scroll', syncS2, false);
+  };
+}

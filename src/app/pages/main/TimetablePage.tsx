@@ -3,18 +3,17 @@ import Timetable from "@/components/timetable/Timetable"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useSettings } from "@/context/UserSettingsContext"
-import { DONATION_LINK, GITHUB_ISSUE, GITHUB_REPO } from "@/lib/constants"
+import { APP_PLAY_STORE, DONATION_LINK, GITHUB_ISSUE, GITHUB_REPO } from "@/lib/constants"
 import { getSchoolYearDates, getWeekDates } from "@/lib/date"
 import { fetchLecturesForGroups } from "@/lib/http/api"
 import { exportDataToIcs, filterLecturesBySelectedGroups, getDistinctSelectedGroups, stringToFile } from "@/lib/timetableUtils"
 import { getSchoolInfo } from "@/stores/schoolData"
 import { useMutation } from "@tanstack/react-query"
-import { Bug, Coffee, FileDown, Github, Loader2Icon, RotateCcw, Settings } from "lucide-react"
+import { Bug, Coffee, FileDown, Github, Loader2Icon, RotateCcw, Settings, Smartphone } from "lucide-react"
 import { useState } from "react"
 
-const { schoolCode } = getSchoolInfo()
-
 function TimetablePage() {
+  const { schoolCode } = getSchoolInfo()
   const { selectedGroups, changeSelectedGroups, reset } = useSettings()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [date, setDate] = useState(new Date())
@@ -67,6 +66,7 @@ function TimetablePage() {
         </Card>}
       <Timetable date={date} setDate={setDate} />
       <div className="flex gap-5 justify-center m-5 flex-wrap">
+        <Button onClick={() => window.open(APP_PLAY_STORE, "_blank")} variant="link"><Smartphone />Get android app</Button>
         <Button onClick={() => window.open(GITHUB_REPO, "_blank")} variant="link"><Github />View source code</Button>
         <Button onClick={() => window.open(GITHUB_ISSUE, "_blank")} variant="link"><Bug />Report an issue or suggest a feature</Button>
         <Button onClick={() => window.open(DONATION_LINK, "_blank")} variant="link"><Coffee />Support me</Button>

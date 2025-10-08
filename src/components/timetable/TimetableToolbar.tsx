@@ -6,7 +6,7 @@ interface TimetableToolbarProps extends Omit<ToolbarProps, "views"> {
   views: string[]
 }
 
-function TimetableToolbar({date, label, localizer, onNavigate, onView, view}: TimetableToolbarProps) {
+function TimetableToolbar({ label, onNavigate, onView, view}: TimetableToolbarProps) {
 
   return (
     <div className="flex justify-between items-center p-5 flex-col sm:flex-row gap-2 pt-2.5">
