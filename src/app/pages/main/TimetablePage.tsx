@@ -15,7 +15,7 @@ import { useState } from "react"
 function TimetablePage() {
   const { schoolCode } = getSchoolInfo()
   const { selectedGroups, changeSelectedGroups, reset } = useSettings()
-  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(Object.keys(selectedGroups).length === 0 ? true : false)
   const [date, setDate] = useState(new Date())
   
   const exportDataMutaion = useMutation({
