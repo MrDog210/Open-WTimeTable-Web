@@ -2,16 +2,18 @@
 
 # Open Wise TimeTable Web
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)  
+![GitHub License](https://img.shields.io/github/license/MrDog210/Open-WTimeTable-Web?style=for-the-badge)
+![GitHub Repo stars](https://img.shields.io/github/stars/MrDog210/Open-WTimeTable-Web?style=for-the-badge)
 
-
-This is a website made with react, to view wise timetable.  
+This is a website to view wise timetable lectures.  
 | Desktop                                    | Mobile                                    | Mobile day view                            |
 | ------------------------------------------ | ----------------------------------------- | ------------------------------------------ |
-| ![Desktop](public/screenshots/desktop.png) | ![Mobile1](public/screenshots/mobile.png) | ![Mobile2](public/screenshots/mobile2.png) |
+| ![Desktop](assets/desktop.webp) | ![Mobile1](assets/mobile1.webp) | ![Mobile2](assets/mobile2.webp) |
 
 ## Features:
 - Dark/light theme
+- Select different groups for each course
+- Export timetable to ics format
 - Automatically remembers selected groups
 - Desktop and mobile support
 - Can be installed as a progressive web app
@@ -19,9 +21,9 @@ This is a website made with react, to view wise timetable.
 ## Setup instructions
 
 1. Clone the repo
-2. run  ``` yarn install ```
-3. Rename loginCredentials to loginCredentials.js in constants folder and enter your credentials
-4. ``` npm start ```
+2. Run  ``` npm install ```
+3. Copy and rename ``` example.env ``` to ``` .env ```
+4. Run ``` npm run dev ```
 
 To deploy to github pages, run ``` npm run deploy ```  
 Note: Due to CORS headers, a proxy is needed to remove them.
