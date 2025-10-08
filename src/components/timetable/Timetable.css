@@ -1,0 +1,100 @@
+.rbc-event-label {
+    display: none !important;
+}
+
+.rbc-time-view {
+  border: none;
+}
+
+.rbc-btn-group button {
+  color: var(--fg-primary);
+}
+
+.rbc-time-view * {
+  border-color: var(--fg-secondary) !important;
+}
+
+.rbc-day-slot {
+  min-width: 150px;
+}
+
+.rbc-header {
+  min-width: 150px;
+}
+
+.rbc-day-slot .rbc-timeslot-group {
+  border-bottom: none;
+}
+
+.rbc-today {
+  background-color: var(--color-card);
+}
+
+.rbc-allday-cell {
+  display: none;
+}
+
+.rbc-timeslot-group {
+  min-height: 70px;
+}
+
+.rbc-header {
+  border: none;
+  display: flex;
+  min-height: 40px;
+  padding-bottom: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.rbc-time-header {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.rbc-time-header-content {
+  border: 0px 0px 0px 0px;
+}
+
+.rbc-time-content {
+  border-top: none;
+  border-bottom: 1px solid;
+}
+
+.rbc-events-container {
+  border: none;
+}
+
+.rbc-time-gutter .rbc-timeslot-group {
+  border: none;
+}
+
+.rbc-time-gutter .rbc-timeslot-group .rbc-time-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rbc-selected {
+  background-color: var(--color-secondary) !important;
+}
+
+.rbc-event:focus {
+  outline: none;
+}
+
+.rbc-current-time-indicator {
+  background-color: var(--color-muted-foreground);
+}
+
+.rbc-time-view * {
+  border-color: var(--color-ring) !important;
+}
+
+.rbc-day-slot .rbc-events-container {
+  padding: 0 !important; /* Remove padding if it's acting as spacing */
+  margin: 0 !important; /* Remove margin */
+  margin-left: 0.5rem !important;
+  margin-right: 0.5rem !important;
+}
+

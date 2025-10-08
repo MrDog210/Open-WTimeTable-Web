@@ -1,50 +1,54 @@
 {
-  "name": "open-wtimetable-web",
-  "version": "0.1.0",
-  "homepage": "https://MrDog210.github.io/Open-WTimeTable-Web",
+  "name": "vite-shadcn-starter",
   "private": true,
-  "dependencies": {
-    "@kunukn/react-collapse": "^2.2.10",
-    "@reacticons/ionicons": "^7.1.0",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "dayjs": "^1.11.10",
-    "gh-pages": "^6.1.1",
-    "ky": "^1.2.3",
-    "react": "^18.2.0",
-    "react-big-calendar": "^1.11.2",
-    "react-dom": "^18.2.0",
-    "react-responsive-modal": "^6.4.2",
-    "react-scripts": "5.0.1",
-    "react-select": "^5.8.0",
-    "web-vitals": "^2.1.4",
-    "wouter": "^3.1.0"
-  },
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
+    "@radix-ui/react-popover": "^1.1.15",
+    "@radix-ui/react-select": "^2.2.6",
+    "@radix-ui/react-separator": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@tailwindcss/vite": "^4.1.11",
+    "@tanstack/react-query": "^5.90.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
+    "dayjs": "^1.11.18",
+    "ical-generator": "^9.0.0",
+    "lucide-react": "^0.525.0",
+    "react": "^19.1.0",
+    "react-big-calendar": "^1.19.4",
+    "react-dom": "^19.1.0",
+    "react-use-wizard": "^2.3.0",
+    "string-hash": "^1.1.3",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.11"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@tanstack/eslint-plugin-query": "^5.91.0",
+    "@types/node": "^24.0.10",
+    "@types/react": "^19.1.8",
+    "@types/react-big-calendar": "^1.16.3",
+    "@types/react-dom": "^19.1.6",
+    "@types/string-hash": "^1.1.3",
+    "@vitejs/plugin-react": "^4.6.0",
+    "eslint": "^9.30.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "tw-animate-css": "^1.3.5",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.35.1",
+    "vite": "^7.0.3",
+    "vite-plugin-pwa": "^1.0.3"
   }
 }
