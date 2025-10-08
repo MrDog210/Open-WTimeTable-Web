@@ -1,8 +1,8 @@
-import { Calendar, dayjsLocalizer, type Event } from 'react-big-calendar'
+import { Calendar, dayjsLocalizer } from 'react-big-calendar'
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useSettings } from '@/context/UserSettingsContext'
 import stringHash from 'string-hash'
 import { getWeekDates } from '@/lib/date'
@@ -13,8 +13,8 @@ import type { LectureWise, MyEvent } from '@/lib/types'
 import TimetableEvent from './TimetableEvent'
 import "./Timetable.css"
 import TimetableToolbar from './TimetableToolbar'
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, DialogHeader } from '../ui/dialog'
-import LectureDialog from './LectureDIalog'
+import { Dialog } from '../ui/dialog'
+import LectureDialog from './LectureDialog'
 
 const localizer = dayjsLocalizer(dayjs)
 

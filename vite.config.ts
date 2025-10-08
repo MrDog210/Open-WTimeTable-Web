@@ -10,12 +10,15 @@ export default defineConfig({
     port: 3000
   },
   plugins: [react(), tailwindcss(), VitePWA({
-    registerType: 'autoUpdate',
+    registerType: 'prompt',
+    strategies: "generateSW",
+    srcDir: 'src',
     manifest: {
       name: "Open Wise Timetable Web",
+      start_url: "/",
       short_name: "Opent WTT",
       description: "Web app to view and customize wise lectures",
-      theme_color: "#ffffff",
+      theme_color: "oklch(0.145 0 0)",
       icons: [
         {
           src: "/icon192.png",
@@ -29,6 +32,18 @@ export default defineConfig({
         }
       ]
     },
+    workbox: {
+      globPatterns: ['**/*.{js,css,html,svg,png,svg,ico}'],
+      cleanupOutdatedCaches: true,
+      clientsClaim: true,
+    },
+    devOptions: {
+        enabled: true,
+        navigateFallback: 'index.html',
+        suppressWarnings: true,
+        /* when using generateSW the PWA plugin will switch to classic */
+        type: 'module',
+      },
   })],
   resolve: {
     alias: {

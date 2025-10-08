@@ -15,8 +15,8 @@ function SchoolCodeInputPage() {
   const schoolInfoMutation = useMutation({
     mutationFn: async () => {
       const schoolInfo = await getSchoolInfo(code)
-      await setSchoolInfo(schoolInfo)
-      await setUrlSchoolCode(code)
+      setSchoolInfo(schoolInfo)
+      setUrlSchoolCode(code)
       return schoolInfo
     },
     onError: (error) => {

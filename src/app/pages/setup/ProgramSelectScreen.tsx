@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button"
 import { MultiSelect, type MultiSelectOption } from "@/components/ui/multi-select"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { fetchBranchesForProgramm, fetchLecturesForGroups, getBasicProgrammes } from "@/lib/http/api"
-import { getAndSetAllDistinctBranchGroups, getCoursesWithGroups } from "@/lib/timetableUtils"
+import { fetchBranchesForProgramm, getBasicProgrammes } from "@/lib/http/api"
+import { getAndSetAllDistinctBranchGroups } from "@/lib/timetableUtils"
 import type { Programme } from "@/lib/types"
 import { getSchoolInfo, saveSelectedBranches } from "@/stores/schoolData"
 import { useMutation, useQuery } from "@tanstack/react-query"
@@ -21,7 +21,7 @@ function ProgramSelectScreen() {
   const [selectedYear, setSelectedYear] = useState<string | undefined>(undefined)
   const [selectedBranches, setSelectedBranches] = useState<string[]>([])
   
-  const { data: programms, ...basicProgrammesQuery} = useQuery({
+  const { data: programms } = useQuery({
     initialData: [],
      queryFn: async () => {
       return getBasicProgrammes(schoolInfo.schoolCode)
@@ -47,14 +47,6 @@ function ProgramSelectScreen() {
     mutationFn: async () => {
       saveSelectedBranches(selectedBranches)
       return getAndSetAllDistinctBranchGroups(schoolInfo.schoolCode, selectedBranches)
-
-      /*const groups = await getAndSetAllDistinctBranchGroups(schoolInfo.schoolCode, selectedBranches)
-      const {startDate, endDate} = getSchoolYearDates()
-      const lectures = await fetchLecturesForGroups(schoolInfo.schoolCode, groups, startDate, endDate)
-      //const lectures = await fetchLecturesForGroups(schoolInfo.schoolCode, groups, dayjs().subtract(1, 'months').toDate(), dayjs().add(2, 'months').toDate())
-      const start = performance.now()
-      scg(getCoursesWithGroups(lectures, groups.map((g) => g.id)))
-      console.log(performance.now() - start)*/
     },
     onSuccess: () => {
       changeSettings({
@@ -82,7 +74,7 @@ function ProgramSelectScreen() {
             }
           }>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a fruit" />
+              <SelectValue placeholder="Select a program" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -90,8 +82,6 @@ function ProgramSelectScreen() {
               </SelectGroup>
             </SelectContent>
           </Select>
-
-
             <h2>Select year</h2>
             <Select 
             disabled={!selectedProgramme}
@@ -102,7 +92,7 @@ function ProgramSelectScreen() {
             }}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a fruit" />
+              <SelectValue placeholder="Select a year" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>

@@ -1,5 +1,5 @@
 import type { LectureWise } from '@/lib/types'
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, DialogHeader } from '../ui/dialog'
+import { DialogContent, DialogTitle, DialogHeader } from '../ui/dialog'
 import { Separator } from '../ui/separator'
 import { formatArray } from '@/lib/timetableUtils'
 import { getTimeFromDate } from '@/lib/date'
@@ -32,7 +32,7 @@ function LectureDialog({ lecture }: LectureDialogProps) {
   if(!lecture)
     return <></>
   
-  const { branches, color, colorText, course, start_time, end_time, eventType, executionType, groups, lecturers, note, rooms, showLink } = lecture ?? {}
+  const { colorText, course, start_time, end_time, eventType, executionType, groups, lecturers, note, rooms, showLink } = lecture ?? {}
   
   return (
     <DialogContent>

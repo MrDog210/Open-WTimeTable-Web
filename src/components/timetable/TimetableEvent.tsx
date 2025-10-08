@@ -1,5 +1,5 @@
 import type { MyEvent } from "@/lib/types"
-import { Card, CardContent } from "../ui/card"
+import { Card } from "../ui/card"
 import { getTimeFromDate } from "@/lib/date"
 import { formatArray } from "@/lib/timetableUtils"
 
@@ -9,7 +9,7 @@ type TimetableEventProps = {
 
 function TimetableEvent({ event }: TimetableEventProps) {
   const { lecture } = event
-  const { branches, color, colorText, course, start_time, end_time, eventType, executionType, groups, lecturers, note, rooms, showLink } = lecture
+  const { color, colorText, course, start_time, end_time, eventType, executionType, lecturers, rooms } = lecture
   const hexColor = (color === null || color === '') ? undefined : `#${color}`
 
   return (
