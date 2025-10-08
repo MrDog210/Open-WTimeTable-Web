@@ -27,6 +27,10 @@ jobs:
       name: github-pages
       url: https://mrdog210.github.io/Open-WTimeTable-Web/
     runs-on: ubuntu-latest
+    env:
+      VITE_USERNAME: ${{ secrets.VITE_USERNAME }}
+      VITE_PASSWORD: ${{ secrets.VITE_PASSWORD }}
+      VITE_HTTP_PROXY: ${{ secrets.VITE_HTTP_PROXY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
