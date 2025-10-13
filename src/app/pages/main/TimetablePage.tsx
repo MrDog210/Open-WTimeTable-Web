@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/mode-toggle"
 import GroupsSelect from "@/components/timetable/GroupsSelect"
 import Timetable from "@/components/timetable/Timetable"
 import { Button } from "@/components/ui/button"
@@ -52,6 +53,7 @@ function TimetablePage() {
           { exportDataMutaion.isPending ? <Loader2Icon className="animate-spin" /> : <FileDown />}
           Export semester
         </Button>
+        <ModeToggle />
         <div className="flex-1" />
         <Button variant={"destructive"} onClick={reset}>
           <RotateCcw />
