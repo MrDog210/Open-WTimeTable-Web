@@ -40,7 +40,7 @@ function SchoolCodeInputPage() {
       }}>
         <div className="flex gap-2">
           <Input className={schoolInfoMutation.isError ? 'border-red-400' : undefined} minLength={1} required type="text" placeholder="Enter your school code (example 'feri')" value={code} onChange={(e) => setCode(e.target.value)} />
-          <Button type="button" variant={"outline"} onClick={() => setDialogOpen(true)}>
+          <Button type="button" variant="outline" onClick={() => setDialogOpen(true)}>
             <Info />
           </Button>
         </div>
@@ -54,8 +54,8 @@ function SchoolCodeInputPage() {
           <DialogHeader>
             <DialogTitle>How to find the school code?</DialogTitle>
             <DialogDescription className="flex flex-col gap-2">
-              <p>1. Open your faculty wise timetable page</p>
-              <p>2. At the bottom of the page find code: ...</p>
+              <div>1. Open your faculty wise timetable page</div>
+              <div>2. At the bottom of the page find code: ...</div>
               <img src={findCode} />
             </DialogDescription>
           </DialogHeader>
