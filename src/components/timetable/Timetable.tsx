@@ -34,7 +34,7 @@ function Timetable({ date, setDate }: TimetableProps) {
   const {from, till} = getWeekDates(date)
 
   const [selectedLecture, setSelectedLecture] = useState<LectureWise | undefined>(undefined)
-  const { data: events } = useQuery<MyEvent[]>({
+  const { data: events, isFetching } = useQuery<MyEvent[]>({
     initialData: [],
     queryFn: async () => {
       const distinctGroups = getDistinctSelectedGroups(selectedGroups) as unknown as number[]
@@ -61,7 +61,7 @@ function Timetable({ date, setDate }: TimetableProps) {
         onNavigate={setDate}
         defaultView={defaultTimetableView}
         onView={(v) => changeSettings({
-          defaultTimetableView: v as any
+          defaultTimetableView: v as "day" | "work_week"
         })}
         onSelectEvent={(event) => setSelectedLecture(event.lecture)}
         views={["work_week", "day"]}
@@ -75,7 +75,7 @@ function Timetable({ date, setDate }: TimetableProps) {
           event: TimetableEvent,
           //eventWrapper: ({children, style}) => <div style={style}>{children}</div>
           dateCellWrapper: () => <div className='hidden'></div>,
-          toolbar: TimetableToolbar as any,
+          toolbar: (props) => <TimetableToolbar {...props} isFetching={isFetching} />,
           //dayColumnWrapper: ({children}) => <div>{children}</div>
 
         }}

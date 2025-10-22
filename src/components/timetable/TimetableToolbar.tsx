@@ -1,12 +1,15 @@
 import type { ToolbarProps } from "react-big-calendar"
 import { ButtonGroup } from "../ui/button-group"
 import { Button } from "../ui/button"
+import { Loader2Icon } from "lucide-react"
+import type { MyEvent } from "@/lib/types"
 
-interface TimetableToolbarProps extends Omit<ToolbarProps, "views"> {
-  views: string[]
+interface TimetableToolbarProps extends ToolbarProps<MyEvent> {
+  isFetching: boolean
+
 }
 
-function TimetableToolbar({ label, onNavigate, onView, view}: TimetableToolbarProps) {
+function TimetableToolbar({ label, onNavigate, onView, view, isFetching }: TimetableToolbarProps) {
 
   return (
     <div className="flex justify-between items-center p-5 flex-col sm:flex-row gap-2 pt-2.5">
@@ -15,8 +18,9 @@ function TimetableToolbar({ label, onNavigate, onView, view}: TimetableToolbarPr
         <Button onClick={() => onNavigate("TODAY")} variant="outline">Today</Button>
         <Button onClick={() => onNavigate("NEXT")} variant="outline">Next</Button>
       </ButtonGroup>
-      <div className="flex items-center font-bold">
+      <div className="flex items-center font-bold gap-2">
         {label}
+        { isFetching && <Loader2Icon className="animate-spin" /> }
       </div>
       <ButtonGroup>
         <Button variant={view === "work_week" ? "default" : "outline"} onClick={() => onView("work_week")}>Week</Button>
