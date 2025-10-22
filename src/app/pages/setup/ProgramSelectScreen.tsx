@@ -33,7 +33,7 @@ function ProgramSelectScreen() {
     initialData: [],
     //queryFn: () =>  fetchBranchesForProgramm(schoolInfo.schoolCode, selectedProgramme?.id!, selectedYear!),
     queryFn: async () => {
-      const b = await fetchBranchesForProgramm(schoolInfo.schoolCode, selectedProgramme?.id!, selectedYear!)
+      const b = await fetchBranchesForProgramm(schoolInfo.schoolCode, selectedProgramme?.id ?? '', selectedYear!)
       return b.map((branch): MultiSelectOption => ({
         value: branch.id,
         label: branch.branchName
