@@ -100,3 +100,9 @@ export interface GroupWihtSelection extends GroupLecture {
 export interface MyEvent extends Event {
   lecture: LectureWise
 }
+
+export type DropdownProgramSelectProps = {
+  selectedBranches: string[];
+  setSelectedBranches: (b: string[]) => void;
+  schoolCode: string;
+};
