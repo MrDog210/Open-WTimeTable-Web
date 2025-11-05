@@ -1,8 +1,9 @@
 import type { DropdownProgramSelectProps } from "@/lib/types"
 import { TreeView, type TreeDataItem } from "../tree-view"
-import { Check } from "lucide-react";
-import { getBasicProgrammes } from "@/lib/http/api";
+import { Check, SquareCheck } from "lucide-react";
+import { fetchBranchesForProgramm, getBasicProgrammes } from "@/lib/http/api";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 const data: TreeDataItem[] = [
   {
@@ -47,30 +48,54 @@ function TreeViewProgramSelect({
   schoolCode,
 }: DropdownProgramSelectProps) {
 
-  const { data: programms } = useQuery<TreeDataItem[]>({
-    initialData: [],
+  const [programms, setProgramms] = useState<TreeDataItem[]>([])
+
+  const _q = useQuery({
     queryFn: async () => {
       const p = await getBasicProgrammes(schoolCode)
 
-      return p.map((programme): TreeDataItem => ({
+      setProgramms(p.map((programme): TreeDataItem => ({
         ...programme,
         children: Array(Number(programme.year)).fill(null).map((_, index): TreeDataItem => ({
           id: String(index + 1),
           name: String(index + 1),
           children: [],
-          onClick: () => {
+          onClick: async () => {
+            console.log("CLICK")
             const year = index + 1
-            console.log("Clicked ", programme, year)
+            const branches = await fetchBranchesForProgramm(
+                  schoolCode,
+                  programme.id,
+                  String(year)
+                );
+            const treeBranches = branches.map(({id, branchName}): TreeDataItem => ({
+              id,
+              name: branchName,
+              selectedIcon: () => <SquareCheck />
+            }))
+            setProgramms((prev) =>
+                prev.map((p) => {
+                  if (String((p as any).id) !== String(programme.id) && !((p as any).programmeId === programme.id)) {
+                    return p;
+                  }
+
+                  const newChildren = (p.children ?? []).map((child, i) =>
+                    i === index ? { ...child, children: treeBranches } : child
+                  );
+
+                  return { ...p, children: newChildren };
+                })
+              );
           }
         }))
-      }))
+      })))
     },
     queryKey: ["programmes", { schoolCode: schoolCode }],
   });
 
   return (
     <div>
-      <TreeView data={programms}  />
+      <TreeView data={programms} onSelect={(e) => console.log(e)} />
     </div>
   )
 }

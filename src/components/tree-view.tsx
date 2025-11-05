@@ -3,7 +3,7 @@ import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { ChevronRight } from 'lucide-react'
 import { cva } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
-
+import { Loader2Icon } from "lucide-react"
 const treeVariants = cva(
     'group hover:before:opacity-100 before:absolute before:rounded-lg before:left-0 px-2 before:w-full before:opacity-0 before:bg-accent/70 before:h-[2rem] before:-z-10'
 )
@@ -293,6 +293,7 @@ const TreeNode = ({
                     </TreeActions>
                 </AccordionTrigger>
                 <AccordionContent className="ml-4 pl-1 border-l">
+                    {item.children && item.children.length === 0 && <Loader2Icon className="animate-spin" />}
                     <TreeItem
                         data={item.children ? item.children : item}
                         selectedItemId={selectedItemId}
