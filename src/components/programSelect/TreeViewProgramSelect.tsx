@@ -1,6 +1,6 @@
 import type { DropdownProgramSelectProps } from "@/lib/types"
 import { TreeView, type TreeDataItem } from "../tree-view"
-import { Check, SquareCheck } from "lucide-react";
+import { Check, CircleCheck, SquareCheck } from "lucide-react";
 import { fetchBranchesForProgramm, getBasicProgrammes } from "@/lib/http/api";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -43,7 +43,6 @@ const data: TreeDataItem[] = [
 
 
 function TreeViewProgramSelect({
-  selectedBranches,
   setSelectedBranches,
   schoolCode,
 }: DropdownProgramSelectProps) {
@@ -71,7 +70,7 @@ function TreeViewProgramSelect({
             const treeBranches = branches.map(({id, branchName}): TreeDataItem => ({
               id,
               name: branchName,
-              selectedIcon: () => <SquareCheck />
+              selectedIcon: () => <CircleCheck className="mr-2" />
             }))
             setProgramms((prev) =>
                 prev.map((p) => {
@@ -94,9 +93,10 @@ function TreeViewProgramSelect({
   });
 
   return (
-    <div>
-      <TreeView data={programms} onSelect={(e) => console.log(e)} />
-    </div>
+    <>
+      <div>Select branch or branches</div>
+      <TreeView className="mb-0 pb-0" data={programms}  onSelectChange={(items) => setSelectedBranches(items.map(i => i.id))} />
+    </>
   )
 }
 

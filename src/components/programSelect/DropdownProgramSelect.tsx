@@ -61,7 +61,7 @@ function DropdownProgramSelect({
   });
 
   return (
-    <div className="gap-4 flex flex-col">
+    <div className="gap-4 flex flex-col mb-3">
       <h2>Select program</h2>
       <Select
         value={selectedProgramme?.id}
