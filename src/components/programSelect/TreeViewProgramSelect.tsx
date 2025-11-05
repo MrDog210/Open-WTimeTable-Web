@@ -1,46 +1,35 @@
 import type { DropdownProgramSelectProps } from "@/lib/types"
-import { TreeView, type TreeDataItem } from "../tree-view"
 import { Check, SquareCheck } from "lucide-react";
 import { fetchBranchesForProgramm, getBasicProgrammes } from "@/lib/http/api";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import TreeView, { type TreeViewItem } from "../tree-view";
 
-const data: TreeDataItem[] = [
+const data = [
   {
-    id: '1',
-    name: 'Item 1',
-    
+    id: "1",
+    name: "Root",
+    type: "region",
     children: [
       {
-        id: '2',
-        name: 'Item 1.1',
+        id: "1.1",
+        name: "Folder 1",
+        type: "store",
         children: [
           {
-            id: '3',
-            name: 'Item 1.1.1',
-          },
-          {
-            id: '4',
-            name: 'Item 1.1.2',
-            selectedIcon: <Check />,
-
+            id: "1.1.1",
+            name: "Subfolder",
+            type: "department",
+            children: [
+              { id: "1.1.1.1", name: "File 1", type: "item" },
+              { id: "1.1.1.2", name: "File 2", type: "item" },
+            ],
           },
         ],
       },
-      {
-        id: '5',
-        name: 'Item 1.2 (disabled)',
-        disabled: true
-      },
     ],
   },
-  {
-    id: '6',
-    name: 'Item 2 (draggable)',
-    draggable: true
-  },
 ];
-
 
 function TreeViewProgramSelect({
   selectedBranches,
@@ -48,19 +37,21 @@ function TreeViewProgramSelect({
   schoolCode,
 }: DropdownProgramSelectProps) {
 
-  const [programms, setProgramms] = useState<TreeDataItem[]>([])
+  const [programms, setProgramms] = useState<TreeViewItem[]>([])
 
-  const _q = useQuery({
-    queryFn: async () => {
+  useEffect(() => {
+    async function fethcP() {
       const p = await getBasicProgrammes(schoolCode)
 
-      setProgramms(p.map((programme): TreeDataItem => ({
+      setProgramms(p.map((programme): TreeViewItem  => ({
         ...programme,
-        children: Array(Number(programme.year)).fill(null).map((_, index): TreeDataItem => ({
-          id: String(index + 1),
+        type: "programme",
+        children: Array(Number(programme.year)).fill(null).map((_, index): TreeViewItem => ({
+          id: `${programme.id};${index}`,
           name: String(index + 1),
           children: [],
-          onClick: async () => {
+          type: "year",
+          /*onClick: async () => {
             console.log("CLICK")
             const year = index + 1
             const branches = await fetchBranchesForProgramm(
@@ -68,10 +59,10 @@ function TreeViewProgramSelect({
                   programme.id,
                   String(year)
                 );
-            const treeBranches = branches.map(({id, branchName}): TreeDataItem => ({
+            const treeBranches = branches.map(({id, branchName}): TreeViewItem => ({
               id,
               name: branchName,
-              selectedIcon: () => <SquareCheck />
+              type: "branch"
             }))
             setProgramms((prev) =>
                 prev.map((p) => {
@@ -86,16 +77,17 @@ function TreeViewProgramSelect({
                   return { ...p, children: newChildren };
                 })
               );
-          }
+          }*/
         }))
       })))
-    },
-    queryKey: ["programmes", { schoolCode: schoolCode }],
-  });
+    }
+
+    fethcP()
+  }, [])
 
   return (
     <div>
-      <TreeView data={programms} onSelect={(e) => console.log(e)} />
+      <TreeView data={programms} onAction={(a) => console.log(a)} />
     </div>
   )
 }

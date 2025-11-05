@@ -36,7 +36,7 @@ function ProgramSelectScreen() {
   //console.log(selectedProgramme)
   return (
     <div className="flex h-screen justify-center items-center m-5">
-      <Card className="w-full max-w-sm">
+      <Card className="w-full max-w-lg">
         <CardContent className="gap-4 flex flex-col">
           {
             treeView ?
