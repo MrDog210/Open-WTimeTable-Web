@@ -32,7 +32,7 @@ function SchoolCodeInputPage() {
   
   return (
     <div className="flex h-screen flex-col justify-center items-center gap-5">
-      <img src={banner} alt="banner" className="p-5 md:max-w-130"/>
+      <img src={banner} alt="banner" className="p-5 md:max-w-130 bg-gray-800 rounded-2xl overflow-hidden dark:bg-transparent"/>
       <form className="flex flex-col gap-4 w-screen md:max-w-100 p-5 max-w-sm" onSubmit={(e) => {
         e.preventDefault()
         if(schoolInfoMutation.isPending) return
