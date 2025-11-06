@@ -1,102 +1,76 @@
 import type { DropdownProgramSelectProps } from "@/lib/types"
 import { TreeView, type TreeDataItem } from "../tree-view"
-import { Check, CircleCheck, SquareCheck } from "lucide-react";
+import { Check, CircleCheck, Loader2Icon, SquareCheck } from "lucide-react";
 import { fetchBranchesForProgramm, getBasicProgrammes } from "@/lib/http/api";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-
-const data: TreeDataItem[] = [
-  {
-    id: '1',
-    name: 'Item 1',
-    
-    children: [
-      {
-        id: '2',
-        name: 'Item 1.1',
-        children: [
-          {
-            id: '3',
-            name: 'Item 1.1.1',
-          },
-          {
-            id: '4',
-            name: 'Item 1.1.2',
-            selectedIcon: <Check />,
-
-          },
-        ],
-      },
-      {
-        id: '5',
-        name: 'Item 1.2 (disabled)',
-        disabled: true
-      },
-    ],
-  },
-  {
-    id: '6',
-    name: 'Item 2 (draggable)',
-    draggable: true
-  },
-];
-
 
 function TreeViewProgramSelect({
   setSelectedBranches,
   schoolCode,
 }: DropdownProgramSelectProps) {
+  const queryClient = useQueryClient();
 
-  const [programms, setProgramms] = useState<TreeDataItem[]>([])
-
-  const _q = useQuery({
+  const { data: programms } = useQuery<TreeDataItem[]>({
+    initialData: [],
     queryFn: async () => {
       const p = await getBasicProgrammes(schoolCode)
 
-      setProgramms(p.map((programme): TreeDataItem => ({
+      return p.map((programme): TreeDataItem => ({
         ...programme,
         children: Array(Number(programme.year)).fill(null).map((_, index): TreeDataItem => ({
           id: String(index + 1),
           name: String(index + 1),
           children: [],
-          onClick: async () => {
-            console.log("CLICK")
-            const year = index + 1
-            const branches = await fetchBranchesForProgramm(
-                  schoolCode,
-                  programme.id,
-                  String(year)
-                );
-            const treeBranches = branches.map(({id, branchName}): TreeDataItem => ({
-              id,
-              name: branchName,
-              selectedIcon: () => <CircleCheck className="mr-2" />
-            }))
-            setProgramms((prev) =>
-                prev.map((p) => {
-                  if (String((p as any).id) !== String(programme.id) && !((p as any).programmeId === programme.id)) {
-                    return p;
-                  }
-
-                  const newChildren = (p.children ?? []).map((child, i) =>
-                    i === index ? { ...child, children: treeBranches } : child
-                  );
-
-                  return { ...p, children: newChildren };
-                })
-              );
-          }
+          onClick: () => addBranchToProgram.mutateAsync({index, programmeId: programme.id})
         }))
-      })))
+      }))
     },
-    queryKey: ["programmes", { schoolCode: schoolCode }],
+    queryKey: ["treeProgrammes", { schoolCode }],
   });
 
+  const addBranchToProgram = useMutation({
+    mutationFn: async ({ index, programmeId }: { index: number, programmeId: string}) => {
+      const year = index + 1
+      const clickedProgramme = programms.find(p => p.id === programmeId)
+      if(clickedProgramme && clickedProgramme.children![index].children?.length !== 0)
+        return undefined
+      const branches = await fetchBranchesForProgramm(
+        schoolCode,
+        programmeId,
+        String(year)
+      );
+      const treeBranches = branches.map(({ id, branchName }): TreeDataItem => ({
+        id,
+        name: branchName,
+        selectedIcon: () => <CircleCheck className="mr-2" />
+      }))
+      return programms.map((p) => {
+          if (String((p as any).id) !== String(programmeId) && !((p as any).programmeId === programmeId)) {
+            return p;
+          }
+
+          const newChildren = (p.children ?? []).map((child, i) =>
+            i === index ? { ...child, children: treeBranches } : child
+          );
+
+          return { ...p, children: newChildren };
+        })
+    },
+    onSuccess: (newData) => {
+      if(newData)
+        queryClient.setQueryData(["treeProgrammes", { schoolCode }], newData);
+    },
+  });
+
+  if(programms.length === 0)
+    return <div className="flex flex-1 justify-center items-center min-h-50"><Loader2Icon className="animate-spin" /></div>
+
   return (
-    <>
-      <div>Select branch or branches</div>
-      <TreeView className="mb-0 pb-0" data={programms}  onSelectChange={(items) => setSelectedBranches(items.map(i => i.id))} />
-    </>
+    <div className="overflow-auto">
+      <div className="font-bold">Select branch or branches</div>
+      <TreeView className="mb-0 pb-0" data={programms} onSelectChange={(items) => setSelectedBranches(items.map(i => i.id))} />
+    </div>
   )
 }
 

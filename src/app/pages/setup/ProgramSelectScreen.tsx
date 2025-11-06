@@ -34,20 +34,18 @@ function ProgramSelectScreen() {
   function onConformPressed() {
     saveSelectedBranchesMutation.mutate()
   }
-  
+
   //console.log(selectedProgramme)
   return (
     <div className="flex h-screen justify-center items-center ml-3 mr-3">
       <Card className="w-full max-w-lg max-h-3/4 flex flex-col">
         <CardContent className="gap-4 flex flex-col flex-1 overflow-auto">
-          <div>
-            {
+          {
             treeView ?
-            <TreeViewProgramSelect schoolCode={schoolInfo.schoolCode} selectedBranches={selectedBranches} setSelectedBranches={setSelectedBranches} />
-            :
-            <DropdownProgramSelect schoolCode={schoolInfo.schoolCode} selectedBranches={selectedBranches} setSelectedBranches={setSelectedBranches} />
+              <TreeViewProgramSelect schoolCode={schoolInfo.schoolCode} selectedBranches={selectedBranches} setSelectedBranches={setSelectedBranches} />
+              :
+              <DropdownProgramSelect schoolCode={schoolInfo.schoolCode} selectedBranches={selectedBranches} setSelectedBranches={setSelectedBranches} />
           }
-          </div>
           <div className="gap-4 flex flex-col">
             <div className="flex items-center gap-3">
               <Checkbox id="terms" onClick={() => {
@@ -57,8 +55,8 @@ function ProgramSelectScreen() {
               <Label htmlFor="terms">Advanced mode</Label>
             </div>
             <Button variant={"secondary"} onClick={previousStep}>Back</Button>
-            <Button disabled={selectedBranches.length === 0 || saveSelectedBranchesMutation.isPending } onClick={onConformPressed}>
-              { saveSelectedBranchesMutation.isPending && <Loader2Icon className="animate-spin" />}
+            <Button disabled={selectedBranches.length === 0 || saveSelectedBranchesMutation.isPending} onClick={onConformPressed}>
+              {saveSelectedBranchesMutation.isPending && <Loader2Icon className="animate-spin" />}
               Confirm
             </Button>
           </div>
