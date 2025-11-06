@@ -99,7 +99,7 @@ const TreeView = React.forwardRef<HTMLDivElement, TreeProps>(
         )
 
         const handleSelectChange = React.useCallback(
-            (item: TreeDataItem | undefined, toggled?: boolean) => {
+            (item: TreeDataItem | undefined, _toggled?: boolean) => {
                 // Only used for leaf toggles (TreeLeaf will call with the item)
                 setSelectedItemIds((prev) => {
                     const next = new Set(prev)
@@ -182,7 +182,7 @@ const TreeView = React.forwardRef<HTMLDivElement, TreeProps>(
                     {...props}
                 />
                 <div
-                    onDrop={(e) => { handleDrop({id: '', name: 'parent_div'})}}>
+                    onDrop={(_e) => { handleDrop({id: '', name: 'parent_div'})}}>
                 </div>
             </div>
         )
@@ -449,7 +449,7 @@ const TreeLeaf = React.forwardRef<
                     default={defaultLeafIcon}
                 />
                 <span className="flex-grow text-sm truncate">{item.name}</span>
-                <TreeActions isSelected={selectedItemIds?.has(item.id) && !item.disabled}>
+                <TreeActions isSelected={(selectedItemIds?.has(item.id) && !item.disabled) ?? false}>
                     {item.actions}
                 </TreeActions>
             </div>

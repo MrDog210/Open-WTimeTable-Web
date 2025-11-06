@@ -1,9 +1,8 @@
 import type { DropdownProgramSelectProps } from "@/lib/types"
 import { TreeView, type TreeDataItem } from "../tree-view"
-import { Check, CircleCheck, Loader2Icon, SquareCheck } from "lucide-react";
+import { CircleCheck, Loader2Icon } from "lucide-react";
 import { fetchBranchesForProgramm, getBasicProgrammes } from "@/lib/http/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 
 function TreeViewProgramSelect({
   setSelectedBranches,
