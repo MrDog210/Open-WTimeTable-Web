@@ -1,5 +1,4 @@
-const HTTP_PROXY = import.meta.env.VITE_HTTP_PROXY
-export const API_URL = `${HTTP_PROXY}https://wise-tt.com/WTTWebRestAPI/ws/rest/`
+export const API_URL = `$https://wise-tt.com/WTTWebRestAPI/ws/rest/`
 export const USERNAME = import.meta.env.VITE_USERNAME
 export const PASSWORD = import.meta.env.VITE_PASSWORD
 
