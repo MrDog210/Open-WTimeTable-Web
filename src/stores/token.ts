@@ -1,4 +1,4 @@
-import { API_URL, PASSWORD, USERNAME } from "@/lib/constants";
+import { API_URL, HTTP_PROXY, PASSWORD, USERNAME } from "@/lib/constants";
 
 
 type FetchTokenResponse = {
@@ -6,7 +6,7 @@ type FetchTokenResponse = {
 }
 
 export async function fetchToken() {
-  const response = await fetch(`${API_URL}login`, {
+  const response = await fetch(`${HTTP_PROXY}${API_URL}login`, {
     headers:  {
       'Authorization': 'Basic ' + btoa(`${USERNAME}:${PASSWORD}`), 
       'Content-Type': 'application/json'

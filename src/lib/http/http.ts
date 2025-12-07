@@ -1,12 +1,13 @@
 import { getToken } from "@/stores/token";
+import { HTTP_PROXY } from "../constants";
 
 export async function get<T>(url: string, token?: string) {
   const headers = token ? {
     Authorization: `Bearer ${token}`,
   } : undefined
 
-  const response = await fetch(url, {
-    headers:  headers
+  const response = await fetch(`${HTTP_PROXY}${url}`, {
+    headers: headers
   });
 
   if(!response.ok) {
