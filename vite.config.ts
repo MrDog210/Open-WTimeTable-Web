@@ -10,7 +10,7 @@ export default defineConfig({
     port: 3000
   },
   plugins: [react(), tailwindcss(), VitePWA({
-    registerType: 'prompt',
+    registerType: 'autoUpdate',
     strategies: "generateSW",
     srcDir: 'src',
     manifest: {
@@ -36,6 +36,7 @@ export default defineConfig({
       globPatterns: ['**/*.{js,css,html,svg,png,svg,ico}'],
       cleanupOutdatedCaches: true,
       clientsClaim: true,
+      skipWaiting: true
     },
     devOptions: {
         enabled: true,
