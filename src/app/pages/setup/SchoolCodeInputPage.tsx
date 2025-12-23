@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { getSchoolInfo } from "@/lib/http/api"
 import { setSchoolInfo, setUrlSchoolCode } from "@/stores/schoolData"
 import { useMutation } from "@tanstack/react-query"
@@ -12,6 +11,10 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { InputGroup, InputGroupButton, InputGroupInput } from "@/components/ui/input-group"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import facultiesData from '@/assets/FacultyCodes.json'
+import type { FacultyCode } from "@/lib/types"
+
+const faculties: FacultyCode[] = facultiesData as FacultyCode[]
 
 function SchoolCodeInputPage() {
   const [open, setOpen] = useState(false)
@@ -54,7 +57,11 @@ function SchoolCodeInputPage() {
             </PopoverTrigger>
               </InputGroup>
             <PopoverContent align="end" sideOffset={15} className="p-0 w-75 max-w-dvw">
-              <StatusList setOpen={setOpen} setSelectedStatus={() => {}} />
+              <StatusList setOpen={setOpen} setSelectedStatus={(faculty) => {
+                console.log(faculty)
+                if(faculty)
+                  setCode(faculty.inputCode)
+              }} />
             </PopoverContent>
           </Popover>
           <Button type="button" variant="outline" onClick={() => setDialogOpen(true)}>
@@ -84,55 +91,35 @@ function SchoolCodeInputPage() {
 
 export default SchoolCodeInputPage
 
-const statuses: any[] = [
-  {
-    value: "backlog",
-    label: "Backlog",
-  },
-  {
-    value: "todo",
-    label: "Todo",
-  },
-  {
-    value: "in progress",
-    label: "In Progress",
-  },
-  {
-    value: "done",
-    label: "Done",
-  },
-  {
-    value: "canceled",
-    label: "Canceled",
-  },
-]
+
 function StatusList({
   setOpen,
   setSelectedStatus,
 }: {
   setOpen: (open: boolean) => void
-  setSelectedStatus: (status: any | null) => void
+  setSelectedStatus: (faculty: FacultyCode | null) => void
 }) {
   return (
     <Command>
       <CommandInput placeholder="Filter status..." />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandEmpty>We might not have this code scraped :( </CommandEmpty>
         <CommandGroup>
-          {statuses.map((status) => (
+          {faculties.map((faculty) => {
+            const label = `${faculty.schoolName} - ${faculty.schoolCity} (${faculty.inputCode})`
+            return (
             <CommandItem
-              key={status.value}
-              value={status.value}
+              key={faculty.inputCode}
+              value={label}
               onSelect={(value) => {
-                setSelectedStatus(
-                  statuses.find((priority) => priority.value === value) || null
-                )
+                console.log(value)
+                setSelectedStatus(faculty)
                 setOpen(false)
               }}
             >
-              {status.label}
+              {label}
             </CommandItem>
-          ))}
+          )})}
         </CommandGroup>
       </CommandList>
     </Command>
