@@ -106,3 +106,9 @@ export type DropdownProgramSelectProps = {
   setSelectedBranches: (b: string[]) => void;
   schoolCode: string;
 };
+
+export type FacultyCode = {
+  schoolCity: string
+  schoolName: string
+  inputCode: string
+}
