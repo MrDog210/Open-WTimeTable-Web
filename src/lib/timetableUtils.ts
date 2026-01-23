@@ -88,7 +88,7 @@ export function getDistinctSelectedGroups(selectedGroups: SelectedGroups) {
   return distinct
 }
 
-export function formatArray(array: { [key: string]: any }[], key: string) {
+export function formatArray(array: { [key: string]: unknown }[], key: string) {
   let string = ''
   for(let i = 0; i<array.length; i++)
     string += array[i][key] +((i !== array.length -1) ? ', ' : '')
@@ -140,7 +140,7 @@ export function filterLecturesBySelectedGroups(lectures: LectureWise[], selected
   return lectures.filter(({groups, courseId, course}) => {
     if(course === '') return true
     for(const group of groups)
-      if(selectedGroups[courseId] && selectedGroups[courseId].includes(group.id as any))
+      if(selectedGroups[courseId] && selectedGroups[courseId].includes(group.id as unknown as string))
         return true
     return false
   })

@@ -45,7 +45,8 @@ function TreeViewProgramSelect({
         selectedIcon: () => <CircleCheck className="mr-2" />
       }))
       return programms.map((p) => {
-          if (String((p as any).id) !== String(programmeId) && !((p as any).programmeId === programmeId)) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          if (String(p.id) !== String(programmeId) && !((p as any).programmeId === programmeId)) {
             return p;
           }
 

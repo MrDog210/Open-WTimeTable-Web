@@ -19,7 +19,7 @@ import { useState } from "react"
 
 function TimetablePage() {
   const { schoolCode } = getSchoolInfo()
-  const { selectedGroups, changeSelectedGroups, reset, compactDayView, changeSettings, scrollToCalendar } = useSettings()
+  const { selectedGroups, changeSelectedGroups, reset, compactWeekView, changeSettings, scrollToCalendar } = useSettings()
   const [settingsOpen, setSettingsOpen] = useState(Object.keys(selectedGroups).length === 0 ? true : false)
   const [date, setDate] = useState(new Date())
   
@@ -69,12 +69,12 @@ function TimetablePage() {
               <DialogHeader>
                 <DialogTitle>Settings</DialogTitle>
                 <div className="flex items-center space-x-2">
-                  <Switch checked={compactDayView} onCheckedChange={(checked) => {
+                  <Switch checked={compactWeekView} onCheckedChange={(checked) => {
                     changeSettings({
-                      compactDayView: checked
+                      compactWeekView: checked
                     })
                   }} id="compact-day-view" />
-                  <Label htmlFor="compact-day-view">Compact day view</Label>
+                  <Label htmlFor="compact-day-view">Compact week view</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Switch checked={scrollToCalendar} onCheckedChange={(checked) => {

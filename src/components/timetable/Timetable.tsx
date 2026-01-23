@@ -30,7 +30,7 @@ function Timetable({ date, setDate }: TimetableProps) {
     return syncScrolling()
   }, []);
 
-  const { selectedGroups, defaultTimetableView, changeSettings, compactDayView, scrollToCalendar } = useSettings()
+  const { selectedGroups, defaultTimetableView, changeSettings, compactWeekView, scrollToCalendar } = useSettings()
   const {from, till} = getWeekDates(date)
 
   const [selectedLecture, setSelectedLecture] = useState<LectureWise | undefined>(undefined)
@@ -79,7 +79,7 @@ function Timetable({ date, setDate }: TimetableProps) {
         })}
         onSelectEvent={(event) => setSelectedLecture(event.lecture)}
         views={["work_week", "day"]}
-        className={`h-screen ${compactDayView && defaultTimetableView === 'work_week' ? 'tt-compact-display' : ''}`}
+        className={`h-screen ${compactWeekView && defaultTimetableView === 'work_week' ? 'tt-compact-display' : ''}`}
         min={new Date(1972, 0, 1, 6, 0, 0, 0)}
         max={new Date(1972, 0, 1, 23, 0, 0, 0)}
         timeslots={1}

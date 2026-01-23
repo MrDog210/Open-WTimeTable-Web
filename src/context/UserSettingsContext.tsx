@@ -27,7 +27,7 @@ const DEFAULT_VALUES: SavedSettings = {
   defaultTimetableView: "work_week",
   hasCompletedSetup: false,
   selectedGroups: {},
-  compactDayView: false,
+  compactWeekView: false,
   scrollToCalendar: false
 }
 
@@ -44,7 +44,7 @@ type SavedSettings = {
   hasCompletedSetup: boolean,
   defaultTimetableView: "day" | "work_week",
   selectedGroups: SelectedGroups,
-  compactDayView: boolean,
+  compactWeekView: boolean,
   scrollToCalendar: boolean
   //language: // TODO: add multiple language support
 }

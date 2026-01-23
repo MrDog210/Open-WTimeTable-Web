@@ -14,11 +14,11 @@ function toAcronym(str: string): string {
 
 function TimetableEvent({ event }: TimetableEventProps) {
   const { lecture } = event
-  const { compactDayView, defaultTimetableView } = useSettings()
+  const { compactWeekView, defaultTimetableView } = useSettings()
   const { color, colorText, course, start_time, end_time, eventType, executionType, lecturers, rooms } = lecture
   const hexColor = (color === null || color === '') ? undefined : `#${color}`
 
-  if (compactDayView && defaultTimetableView === 'work_week') // compact view
+  if (compactWeekView && defaultTimetableView === 'work_week') // compact view
     return (
       <Card className="w-full h-full absolute left-0 top-0 p-1 gap-y-0.5">
         <div className="font-bold text-lg leading-none">{course ? toAcronym(course) : toAcronym(eventType)}</div>
