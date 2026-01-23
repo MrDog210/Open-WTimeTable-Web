@@ -88,12 +88,12 @@ export function getDistinctSelectedGroups(selectedGroups: SelectedGroups) {
   return distinct
 }
 
-export function formatArray(array: { [key: string]: unknown }[], key: string) {
-  let string = ''
-  for(let i = 0; i<array.length; i++)
-    string += array[i][key] +((i !== array.length -1) ? ', ' : '')
-
-  return string
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function formatArray<T extends Record<string, any>>(
+  array: T[],
+  key: keyof T
+): string {
+  return array.map(item => String(item[key])).join(', ')
 }
 
 import ical, { ICalCalendarMethod } from 'ical-generator';
