@@ -1,5 +1,5 @@
 import { Calendar, dayjsLocalizer } from 'react-big-calendar'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useQuery } from '@tanstack/react-query'
@@ -30,7 +30,7 @@ function Timetable({ date, setDate }: TimetableProps) {
     return syncScrolling()
   }, []);
 
-  const { selectedGroups, defaultTimetableView, changeSettings } = useSettings()
+  const { selectedGroups, defaultTimetableView, changeSettings, compactDayView, scrollToCalendar } = useSettings()
   const {from, till} = getWeekDates(date)
 
   const [selectedLecture, setSelectedLecture] = useState<LectureWise | undefined>(undefined)
@@ -47,6 +47,20 @@ function Timetable({ date, setDate }: TimetableProps) {
     },
     queryKey: [ 'lectures', stringHash(JSON.stringify(selectedGroups)), dayjs(from).format('DD/MM/YYYY'), dayjs(till).format('DD/MM/YYYY') ]
   })
+
+  const didScrollRef = useRef(false);
+  useEffect(() => {
+    if (!scrollToCalendar) return
+    if (didScrollRef.current) return;
+    const timeout = setTimeout(() => {
+      const el = document.getElementsByClassName('rbc-current-time-indicator')[0];
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        didScrollRef.current = true;
+      }
+    }, 100);
+    return () => clearTimeout(timeout);
+  });
 
   return (
     <>
@@ -65,7 +79,7 @@ function Timetable({ date, setDate }: TimetableProps) {
         })}
         onSelectEvent={(event) => setSelectedLecture(event.lecture)}
         views={["work_week", "day"]}
-        className='h-screen'
+        className={`h-screen ${compactDayView && defaultTimetableView === 'work_week' ? 'tt-compact-display' : ''}`}
         min={new Date(1972, 0, 1, 6, 0, 0, 0)}
         max={new Date(1972, 0, 1, 23, 0, 0, 0)}
         timeslots={1}

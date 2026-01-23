@@ -3,6 +3,8 @@ import GroupsSelect from "@/components/timetable/GroupsSelect"
 import Timetable from "@/components/timetable/Timetable"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 import { useSettings } from "@/context/UserSettingsContext"
 import { APP_PLAY_STORE, DONATION_LINK, GITHUB_ISSUE, GITHUB_REPO } from "@/lib/constants"
 import { getSchoolYearDates, getWeekDates } from "@/lib/date"
@@ -15,7 +17,7 @@ import { useState } from "react"
 
 function TimetablePage() {
   const { schoolCode } = getSchoolInfo()
-  const { selectedGroups, changeSelectedGroups, reset } = useSettings()
+  const { selectedGroups, changeSelectedGroups, reset, compactDayView, changeSettings } = useSettings()
   const [settingsOpen, setSettingsOpen] = useState(Object.keys(selectedGroups).length === 0 ? true : false)
   const [date, setDate] = useState(new Date())
   
@@ -54,6 +56,14 @@ function TimetablePage() {
           Export semester
         </Button>
         <ModeToggle />
+        <div className="flex items-center space-x-2">
+          <Switch checked={compactDayView} onCheckedChange={(checked) => {
+            changeSettings({
+              compactDayView: checked
+            })
+          }} id="compact-day-view" />
+          <Label htmlFor="compact-day-view">Compact day view</Label>
+        </div>
         <div className="flex-1" />
         <Button variant={"destructive"} onClick={reset}>
           <RotateCcw />
