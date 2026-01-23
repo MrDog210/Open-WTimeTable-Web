@@ -47,7 +47,6 @@ function SchoolCodeInputPage() {
       }}>
         <div className="flex gap-2">
           <Popover open={open} onOpenChange={setOpen}>
-            
               <InputGroup>
                 <InputGroupInput className={schoolInfoMutation.isError ? 'border-red-400' : undefined} minLength={1} required type="text" placeholder="Enter your school code (eg: 'feri')" value={code} onChange={(e) => setCode(e.target.value)} />
             <PopoverTrigger asChild>
