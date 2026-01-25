@@ -145,3 +145,25 @@ export function filterLecturesBySelectedGroups(lectures: LectureWise[], selected
     return false
   })
 }
+
+interface TimeslotData {
+  lectures: LectureWise[],
+  score: number
+}
+
+export function findBestTimeslots(allOff: LectureWise[], oneOff: LectureWise[][]) {
+  const timeslots: TimeslotData[] = []
+
+  for(const option of oneOff) {
+
+  }
+}
+
+
+function calculateScore(lectures: LectureWise[]): number {
+  return 0
+}
+
+function hasConflict(lect1: LectureWise, lect2: LectureWise) {
+  return lect1.start_time < lect2.end_time && lect2.start_time < lect1.end_time
+}
