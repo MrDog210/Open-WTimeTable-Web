@@ -67,7 +67,7 @@ function DropdownProgramSelect({
         value={selectedProgramme?.id}
         onValueChange={(selectedP) => {
           setSelectedProgramme(programms.find((p) => p.id === selectedP)!);
-          setSelectedYear(undefined);
+          setSelectedYear(null as unknown as undefined);
           setSelectedBranches([]);
         }}
       >

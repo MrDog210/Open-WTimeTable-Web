@@ -52,7 +52,7 @@ function ProgramSelectScreen() {
                 setTreeView(!treeView)
                 setSelectedBranches([])
               }} />
-              <Label htmlFor="terms">Advanced mode</Label>
+              <Label htmlFor="terms">Multiselect mode</Label>
             </div>
             <Button variant={"secondary"} onClick={previousStep}>Back</Button>
             <Button disabled={selectedBranches.length === 0 || saveSelectedBranchesMutation.isPending} onClick={onConformPressed}>
