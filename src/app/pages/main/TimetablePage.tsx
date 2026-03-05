@@ -93,7 +93,7 @@ function TimetablePage() {
         </Popover>
         <ModeToggle />
         <Dialog>
-          <DialogTrigger>
+          <DialogTrigger asChild>
             <Button variant="outline">
               <SettingsIcon />
               Settings
