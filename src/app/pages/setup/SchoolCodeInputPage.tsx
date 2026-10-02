@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button"
 import { getSchoolInfo } from "@/lib/http/api"
-import { setSchoolInfo, setUrlSchoolCode } from "@/stores/schoolData"
+import { setSchoolInfo } from "@/stores/schoolData"
 import { useMutation } from "@tanstack/react-query"
-import { useState } from "react"
-import { Info, Loader2Icon, Search } from "lucide-react"
+import { useRef, useState } from "react"
+import { DatabaseArrowUp, Info, Loader2Icon, Search } from "lucide-react"
 import { useWizard } from "react-use-wizard"
 import banner from '@/assets/banner.webp'
 import findCode from '@/assets/findCode.webp'
@@ -13,6 +13,7 @@ import { InputGroup, InputGroupButton, InputGroupInput } from "@/components/ui/i
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import facultiesData from '@/assets/FacultyCodes.json'
 import type { FacultyCode } from "@/lib/types"
+import { importSettings } from "@/lib/utils"
 
 const faculties: FacultyCode[] = facultiesData as FacultyCode[]
 
@@ -21,12 +22,12 @@ function SchoolCodeInputPage() {
   const [code, setCode] = useState('')
   const [dialogOpen, setDialogOpen] = useState(false)
   const { nextStep } = useWizard();
+  const importInputRef = useRef<HTMLInputElement>(null)
 
   const schoolInfoMutation = useMutation({
     mutationFn: async () => {
       const schoolInfo = await getSchoolInfo(code)
       setSchoolInfo(schoolInfo)
-      setUrlSchoolCode(code)
       return schoolInfo
     },
     onError: (error) => {
@@ -39,6 +40,20 @@ function SchoolCodeInputPage() {
   
   return (
     <div className="flex h-screen flex-col justify-center items-center gap-5">
+      <div className="absolute top-5 right-5 flex gap-2">
+        <Button variant="ghost" className="justify-start"
+          onClick={() => importInputRef.current?.click()}>
+          <DatabaseArrowUp />
+          Import saved groups
+        </Button>
+        <input
+          ref={importInputRef}
+          type="file"
+          accept=".wise"
+          className="hidden"
+          onChange={importSettings}
+        />
+      </div>
       <img src={banner} alt="banner" fetchPriority="high" className="p-5 md:max-w-130 bg-gray-800 rounded-2xl overflow-hidden dark:bg-transparent"/>
       <form className="flex flex-col gap-4 w-screen md:max-w-100 p-5 max-w-sm" onSubmit={(e) => {
         e.preventDefault()
@@ -89,7 +104,6 @@ function SchoolCodeInputPage() {
 }
 
 export default SchoolCodeInputPage
-
 
 function StatusList({
   setOpen,

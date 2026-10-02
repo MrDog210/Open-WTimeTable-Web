@@ -1,12 +1,4 @@
-import type { GroupBranchChild, SchoolInfo } from "@/lib/types"
-
-export  function getUrlSchoolCode() {
-  return localStorage.getItem('UrlSchoolCode')
-}
-
-export  function setUrlSchoolCode(schoolCode: string) {
-  return localStorage.setItem('UrlSchoolCode', schoolCode)
-}
+import type { SchoolInfo } from "@/lib/types"
 
 export function getSchoolInfo() {
   const jsonString = localStorage.getItem('schoolInfo')
@@ -25,17 +17,6 @@ export  function getServerUrl() {
 
 export  function setServerUrl(serverUrl: string) {
   return localStorage.setItem('serverUrl', serverUrl)
-}
-
-export  function getAllStoredBranchGroups() {
-  const json = localStorage.getItem('groups')
-  if(!json)
-    throw new Error("groups is null!")
-  return JSON.parse(json) as GroupBranchChild[]
-}
-
-export  function setAllBranchGroups(groups: GroupBranchChild[]) {
-  return localStorage.setItem('groups', JSON.stringify(groups))
 }
 
 export  function getSelectedBranches() {

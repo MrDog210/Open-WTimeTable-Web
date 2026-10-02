@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
-function saveSettings(settings: SavedSettings) {
+export function saveSettings(settings: SavedSettings) {
   return localStorage.setItem('settings', JSON.stringify(settings))
 }
 
@@ -40,7 +40,7 @@ export function useSettings() {
   return settingsCtx
 }
 
-type SavedSettings = {
+export type SavedSettings = {
   hasCompletedSetup: boolean,
   defaultTimetableView: "day" | "work_week",
   selectedGroups: SelectedGroups,

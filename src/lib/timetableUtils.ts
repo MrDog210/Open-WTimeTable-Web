@@ -1,4 +1,4 @@
-import { getSchoolInfo, getSelectedBranches, setAllBranchGroups } from "@/stores/schoolData"
+import { getSchoolInfo, getSelectedBranches } from "@/stores/schoolData"
 import { fetchGroupsForBranch, fetchLecturesForGroups } from "./http/api"
 import type { Course, CoursesAndTheirGroups, GroupBranchChild, GroupBranchMain, GroupLecture, LectureWise } from "./types"
 import { getSchoolYearDates } from "./date"
@@ -8,7 +8,6 @@ export async function getAndSetAllDistinctBranchGroups(schoolCode: string, chose
   const groups: GroupBranchChild[] = []
   for (const branchId of chosenBranchesID)
     groups.push(...getAllUniqueGroups(await fetchGroupsForBranch(schoolCode, branchId)))
-  await setAllBranchGroups(groups)
   return groups
 }
 
@@ -111,9 +110,9 @@ export function exportDataToIcs(lectures: LectureWise[]) {
       description: '',
       url: showLink,
       location: formatArray(rooms, "name"),
-      organizer: {
+      /*organizer: {
         name: lecturersNames === "" ? "No lecturers" : lecturersNames
-      }
+      }*/
    });
   }
 

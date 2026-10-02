@@ -12,17 +12,20 @@ import { APP_PLAY_STORE, DONATION_LINK, GITHUB_ISSUE, GITHUB_REPO } from "@/lib/
 import { getSchoolYearDates, getWeekDates } from "@/lib/date"
 import { fetchLecturesForGroups } from "@/lib/http/api"
 import { exportDataToIcs, filterLecturesBySelectedGroups, getDistinctSelectedGroups, stringToFile } from "@/lib/timetableUtils"
-import { getSchoolInfo } from "@/stores/schoolData"
+import { importSettings } from "@/lib/utils"
+import { getSchoolInfo, getSelectedBranches, getServerUrl} from "@/stores/schoolData"
 import { DialogTitle, DialogTrigger } from "@radix-ui/react-dialog"
 import { useMutation } from "@tanstack/react-query"
-import { BoxesIcon, Bug, Coffee, FileDown, Github, Loader2Icon, RotateCcw, SettingsIcon, Smartphone } from "lucide-react"
-import { useState } from "react"
+import { BoxesIcon, Bug, Coffee, FileDown, Loader2Icon, RotateCcw, SettingsIcon, Smartphone, DatabaseArrowDown, DatabaseArrowUp } from "lucide-react"
+import { useRef, useState } from "react"
 
 function TimetablePage() {
   const { schoolCode } = getSchoolInfo()
-  const { selectedGroups, changeSelectedGroups, reset, compactWeekView, changeSettings, scrollToCalendar } = useSettings()
+  const settings = useSettings()
+  const { selectedGroups, changeSelectedGroups, reset, compactWeekView, changeSettings, scrollToCalendar } = settings
   const [settingsOpen, setSettingsOpen] = useState(Object.keys(selectedGroups).length === 0 ? true : false)
   const [date, setDate] = useState(new Date())
+  const importInputRef = useRef<HTMLInputElement>(null)
   
   const exportDataMutaion = useMutation({
     mutationFn: async ({period}: {period: "week" | "all"}) => {
@@ -42,6 +45,27 @@ function TimetablePage() {
       stringToFile(stringData, "text/calendar", "wise-lectures.ics")
     }
   })
+
+  function exportSettings() {
+    const data = {
+      settings: settings,
+      schoolInfo: getSchoolInfo(),
+      serverUrl: getServerUrl(),
+      selectedBranches: getSelectedBranches()
+    }
+
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = "saved-settings.wise";
+    a.click();
+
+    URL.revokeObjectURL(url);
+  }
 
   return (
     <div>
@@ -128,6 +152,23 @@ function TimetablePage() {
                   Scroll to timetable on load
                 </Label>
               </div>
+              <Button variant="outline" className="justify-start"
+                onClick={exportSettings}>
+                <DatabaseArrowDown />
+                Export saved groups
+              </Button>
+              <Button variant="outline" className="justify-start"
+                onClick={() => importInputRef.current?.click()}>
+                <DatabaseArrowUp />
+                Import saved groups
+              </Button>
+              <input
+                ref={importInputRef}
+                type="file"
+                accept=".wise"
+                className="hidden"
+                onChange={importSettings}
+              />
             </DialogHeader>
           </DialogContent>
         </Dialog>
@@ -160,7 +201,6 @@ function TimetablePage() {
           onClick={() => window.open(GITHUB_REPO, "_blank")}
           variant="link"
         >
-          <Github />
           View source code
         </Button>
         <Button
