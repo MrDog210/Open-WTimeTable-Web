@@ -101,8 +101,8 @@ export function exportDataToIcs(lectures: LectureWise[]) {
   const calendar = ical({ name: 'OPEN WTT EXPORT' });
   calendar.method(ICalCalendarMethod.ADD);
 
-  for(const { start_time, end_time, course, rooms, lecturers, executionType, showLink } of lectures) {
-    const lecturersNames = formatArray(lecturers, "name") 
+  for(const { start_time, end_time, course, rooms, executionType, showLink } of lectures) {
+    //const lecturersNames = formatArray(lecturers, "name") 
     calendar.createEvent({
       start: start_time,
       end: end_time,
